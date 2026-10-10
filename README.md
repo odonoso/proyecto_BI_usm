@@ -13,9 +13,9 @@ El caso de estudio corresponde a la empresa **Kent Foods**, una organización co
 
 ## Sección y Asignatura
 
-- Asignatura: **Inteligencia de negocios**
-- Sección: Paralelo 300
-- Docente: **Hernan Marcelo Saavedra Gonzalez**
+- **Asignatura**: Inteligencia de negocios
+- **Sección**: Paralelo 300
+- **Docente**: Hernan Marcelo Saavedra Gonzalez
 
 ## Descripción del problema
 
@@ -37,33 +37,30 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 - **Dimensiones**: DIM_CLIENTE, DIM_PRODUCTO, DIM_EMPLEADO, DIM_TIEMPO, DIM_TRANSPORTISTA
 
-- **Medidas**: cantidad, precio_unitario, descuento, monto_bruto(**cantidad x precio_unitario**), monto_descuento(**cantidad x precio_unitario x descuento**), monto_total (**monto_bruto - monto_descuento**)
+- **Medidas**: cantidad, precio_unitario, descuento, monto_bruto(**cantidad x precio_unitario**), monto_descuento(**cantidad x precio_unitario x descuento**), monto_total (**monto_bruto - monto_descuento**), dias_despacho
 
 - **Tabla de hechos**: FACT_DETALLE_VENTA, la cual almacena las claves foráneas de las dimensiones (id_cliente, id_producto, id_empleado, id_tiempo, id_transportista)
 
-- **Esquema dimensional**
+### Esquema dimensional 
 
-
-
-
-
+![](docs/Fact.png)
 
 
 ## KPIs definidos
 
 - **Ventas Netas Totales**: 
-    - Fórmula analítica: **$\sum \text{MontoNeto} = \sum (\text{Cantidad} \times \text{PrecioUnitario} \times (1 - \text{Descuento}))$.**   
+    - **Fórmula analítica:** $\sum \text{MontoNeto} = \sum (\text{Cantidad} \times \text{PrecioUnitario} \times (1 - \text{Descuento}))$. 
 
-    - Dimensiones de análisis: Dim_Tiempo (mes, trimestre, año), Dim_Producto (categoría de alimentos), Dim_Cliente (país/ciudad).
+    - **Dimensiones de análisis:** Dim_Tiempo (mes, trimestre, año), Dim_Producto (categoría de alimentos), Dim_Cliente (país/ciudad).
 
-    - Justificación de negocio: Es el indicador principal de salud comercial y crecimiento financiero de Kent Foods. Permite monitorear si las metas de ingresos se están cumpliendo a lo largo del tiempo e identificar qué líneas de alimentos traccionan la mayor recaudación.
+    - **Justificación de negocio:** Es el indicador principal de salud comercial y crecimiento financiero de Kent Foods. Permite monitorear si las metas de ingresos se están cumpliendo a lo largo del tiempo e identificar qué líneas de alimentos traccionan la mayor recaudación.
 
 - **Concentración de Ventas por Categoría de Alimento**
-    - Fórmula analítica: $\frac{\text{Ventas Netas por Categoría}}{\text{Ventas Netas Totales}} \times 100$.
+    - **Fórmula analítica:** $\frac{\text{Ventas Netas por Categoría}}{\text{Ventas Netas Totales}} \times 100$.
     
-    - Dimensiones de análisis: Dim_Producto (Categoria, Proveedor).
+    - **Dimensiones de análisis:** Dim_Producto (Categoria, Proveedor).
 
-    - Justificación de negocio: Detecta qué categorías de alimentos concentran el mayor volumen de negocio y cuáles tienen baja rotación, facilitando decisiones estratégicas de abastecimiento con proveedores y gestión de inventario.
+    - **Justificación de negocio:** Detecta qué categorías de alimentos concentran el mayor volumen de negocio y cuáles tienen baja rotación, facilitando decisiones estratégicas de abastecimiento con proveedores y gestión de inventario.
 
 
 
