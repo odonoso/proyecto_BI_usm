@@ -39,7 +39,7 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 - **Medidas**: cantidad, precio_unitario, descuento, monto_bruto(**cantidad x precio_unitario**), monto_descuento(**cantidad x precio_unitario x descuento**), monto_total (**monto_bruto - monto_descuento**), dias_despacho
 
-- **Tabla de hechos**: FACT_DETALLE_VENTA, la cual almacena las claves foráneas de las dimensiones (id_cliente, id_producto, id_empleado, id_tiempo, id_transportista)
+- **Tabla de hechos**: FACT_DETALLE_VENTA, la cual almacena las claves foráneas de las dimensiones (id_cliente, id_producto, id_empleado, id_fecha_orden,id_fecha_envio, id_transportista)
 
 ### Esquema dimensional 
 
@@ -51,7 +51,7 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 - **Ventas Netas Totales**: 
     - **Fórmula analítica:** $\sum \text{MontoNeto} = \sum (\text{Cantidad} \times \text{PrecioUnitario} \times (1 - \text{Descuento}))$. 
 
-    - **Dimensiones de análisis:** Dim_Tiempo (mes, trimestre, año), Dim_Producto (categoría de alimentos), Dim_Cliente (país/ciudad).
+    - **Dimensiones de análisis:** Dim_Tiempo (mes, dia, año), Dim_Producto (categoría de alimentos), Dim_Cliente (país/ciudad).
 
     - **Justificación de negocio:** Es el indicador principal de salud comercial y crecimiento financiero de Kent Foods. Permite monitorear si las metas de ingresos se están cumpliendo a lo largo del tiempo e identificar qué líneas de alimentos traccionan la mayor recaudación.
 
@@ -61,6 +61,20 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
     - **Dimensiones de análisis:** Dim_Producto (Categoria, Proveedor).
 
     - **Justificación de negocio:** Detecta qué categorías de alimentos concentran el mayor volumen de negocio y cuáles tienen baja rotación, facilitando decisiones estratégicas de abastecimiento con proveedores y gestión de inventario.
+
+- **Desempeño y Ranking de Mejores Proveedores**
+    
+    - **Fórmula análitica:** $\sum (\text{Cantidad} \times \text{PrecioUnitario} \times (1 - \text{Descuento})) \quad \text{agrupado por } \text{NombreProveedor}$
+
+    - **Dimensiones de análisis:** Dim_Producto (NombreProveedor, PaisProveedor, NombreCategoria).   Dim_Tiempo (Anio, Trimestre, Mes). 
+    
+    - **Justificación de negocio:** Kent Foods comercializa productos alimenticios elaborados por terceros. Medir el rendimiento de cada proveedor permite a la gerencia:   Identificar socios estratégicos clave para negociar mejores acuerdos de compra por volumen o descuentos por pronto pago.Evaluar el riesgo de dependencia frente a un proveedor específico.Detectar proveedores con baja rotación o catálogo de alimentos poco demandado para renegociar contratos o reemplazarlos. 
+
+- **Tiempo Promedio de Entrega y Despacho**
+    
+    - **Formula análitica:** $$\frac{\sum (\text{FechaEnvio} - \text{FechaOrden})}{\text{Cantidad Total de Órdenes Despachadas}}$$
+
+    - **Justificacion del negocio:** Dado que el modelo comercial de la empresa se basa en el envío de alimentos perecibles y no perecibles, la velocidad del despacho es crítica para asegurar la frescura de los productos y la satisfacción del consumidor.
 
 
 
