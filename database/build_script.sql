@@ -108,3 +108,35 @@ CONSTRAINT [UQ_Detalle_venta_GRANO] UNIQUE ([ID_ORDEN], [ID_PROD])
 ) ON [PRIMARY]
 GO;
 
+--claves foraneas
+
+ALTER TABLE [dbo].[Detalle_venta]  WITH CHECK ADD  CONSTRAINT [FK_Detalle_venta_Cliente] FOREIGN KEY([ID_CLIENTE])
+REFERENCES [dbo].[Cliente] ([ID_CLIENTE])
+GO
+ALTER TABLE [dbo].[Detalle_venta] CHECK CONSTRAINT [FK_Detalle_venta_Cliente]
+GO
+ALTER TABLE [dbo].[Detalle_venta]  WITH CHECK ADD  CONSTRAINT [FK_Detalle_venta_Empleado] FOREIGN KEY([ID_EMPLEADO])
+REFERENCES [dbo].[Empleado] ([ID_EMPLEADO])
+GO
+ALTER TABLE [dbo].[Detalle_venta] CHECK CONSTRAINT [FK_Detalle_venta_Empleado]
+GO
+ALTER TABLE [dbo].[Detalle_venta]  WITH CHECK ADD  CONSTRAINT [FK_Detalle_venta_Transportista] FOREIGN KEY([ID_TRANSPORTISTA])
+REFERENCES [dbo].[Transportista] ([ID_TRANSPORTISTA])
+GO
+ALTER TABLE [dbo].[Detalle_venta] CHECK CONSTRAINT [FK_Detalle_venta_Transportista]
+GO
+ALTER TABLE [dbo].[Detalle_venta]  WITH CHECK ADD  CONSTRAINT [FK_Detalle_venta_Producto] FOREIGN KEY([ID_PROD])
+REFERENCES [dbo].[Producto] ([ID_PROD])
+GO
+ALTER TABLE [dbo].[Detalle_venta] CHECK CONSTRAINT [FK_Detalle_venta_Producto]
+GO
+ALTER TABLE [dbo].[Detalle_venta]  WITH CHECK ADD  CONSTRAINT [FK_Detalle_venta_Tiempo_Orden] FOREIGN KEY([ID_FECHA_ORDEN])
+REFERENCES [dbo].[Tiempo] ([ID_TIEMPO])
+GO
+ALTER TABLE [dbo].[Detalle_venta] CHECK CONSTRAINT [FK_Detalle_venta_Tiempo_Orden]
+GO
+ALTER TABLE [dbo].[Detalle_venta]  WITH CHECK ADD  CONSTRAINT [FK_Detalle_venta_Tiempo_Envio] FOREIGN KEY([ID_FECHA_ENVIO])
+REFERENCES [dbo].[Tiempo] ([ID_TIEMPO])
+GO
+ALTER TABLE [dbo].[Detalle_venta] CHECK CONSTRAINT [FK_Detalle_venta_Tiempo_Envio]
+GO
