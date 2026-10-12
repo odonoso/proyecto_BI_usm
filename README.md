@@ -83,7 +83,7 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 
 
-## Proceso ETL Fase 1
+## Proceso ETL 
 
 El proceso de Extracción, Transformación y Carga (ETL) se está desarrollando utilizando **SQL Server Integration Services (SSIS)** mediante Visual Studio. 
 
@@ -96,3 +96,5 @@ El proceso de Extracción, Transformación y Carga (ETL) se está desarrollando 
 * **Dimensión Cliente:** Se implementó el flujo de datos integrando un componente de **Columna Derivada** para gestionar y limpiar los valores nulos del campo `CodigoPostal` mediante la función `REPLACENULL`, asegurando el cumplimiento de la restricción `NOT NULL` en el Data Warehouse. Se logró una transferencia exitosa de **91 filas** hacia la tabla destino `[dbo].[Cliente]`.
 * **Dimensión Producto:** Se configuró el flujo de datos integrando las tablas origen `Productos`, `Categorias` y `Proveedores` mediante una consulta SQL con `LEFT JOIN` para garantizar la integridad analítica y evitar la pérdida de registros. Se implementó un componente de **Conversión de Datos** para transformar el tipo de dato antiguo `ntext` a `DT_WVARCHAR` en la descripción de categoría, y se aplicó manejo de nulos con `ISNULL`. Se transfirieron exitosamente **77 filas** hacia la tabla destino `[dbo].[Dim_Producto]`.
 * **Dimensión Empleado:** Se configuró el flujo para cargar `Dim_Empleado` uniendo las tablas `Empleados`, `TerritoriosEmpleados` y `Territorios`. Como algunos trabajadores están asignados a varias zonas, se usó una subconsulta con `MIN(TerritorioID)` para evitar duplicados y errores de llave primaria. Se cargaron exitosamente **49 filas** a la tabla destino.
+* **Dimensión Tiempo:** Se estructuró y pobló mediante un script T-SQL que calcula automáticamente el rango de fechas calendario basándose estrictamente en las operaciones reales de la tabla de órdenes origen, utilizando tipos de datos eficientes (`ID_TIEMPO` en formato entero `YYYYMMDD`, `AÑO` smallint, `MES`/`DIA`/`HORA` tinyint).
+* **Tabla de Hechos (`FACT_DETALLE_VENTA`):** Se configuró la carga de **2,155 filas** operativas en SSIS mediante una consulta SQL optimizada. Incorpora métricas de negocio precalculadas (`MONTO_BRUTO`, `MONTO_DESCUENTO`, `MONTO_TOTAL`, `DIAS_DESPACHO`), transformación de fechas a formato entero para enlazar con la dimensión `Tiempo`, y se apoya en la llave autoincremental (`IDENTITY`) de la tabla destino con validación de unicidad por grano (`[ID_ORDEN]`, `[ID_PROD]`).
