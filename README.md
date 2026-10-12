@@ -83,7 +83,14 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 
 
+## Proceso ETL Fase 1
 
+El proceso de Extracción, Transformación y Carga (ETL) se está desarrollando utilizando **SQL Server Integration Services (SSIS)** mediante Visual Studio. 
 
+**Arquitectura de Conexiones:**
+* **Origen:** Conexión OLE DB apuntando a la base de datos transaccional original (`KentFoods`).
+* **Destino:** Conexión OLE DB apuntando al Data Warehouse (`KentFoodsDW`).
 
+**Progreso de Carga de Dimensiones:**
+* **Dimensión Transportista:** Se implementó el flujo de datos (Data Flow) realizando una extracción directa desde la tabla origen `Transportista` hacia la tabla destino `[dbo].[Transportista]` en el DW. Se verificó el correcto mapeo de las columnas (ID, Nombre y Teléfono) logrando una transferencia exitosa de los registros sin errores de compatibilidad de metadatos.
 
