@@ -96,7 +96,7 @@ La base KentFoodsDW se crea con un modelo en estrella: 5 dimensiones (Transporti
 
 **Detalle_venta:** tabla de hechos, con una fila por producto dentro de una orden.
 
-* **Claves:** ID_DETALLE_VENTA (clave primaria autoincremental), ID_ORDEN (número de orden, único junto con ID_PROD), y las claves foráneas ID_CLIENTE, ID_EMPLEADO, ID_TRANSPORTISTA, ID_PROD, ID_FECHA_ORDEN e ID_FECHA_ENVIO (-1 si no se ha enviado).
+* **Claves:** ID_DETALLE_VENTA (clave primaria autoincremental), y las claves foráneas ID_CLIENTE, ID_EMPLEADO, ID_TRANSPORTISTA, ID_PROD, ID_FECHA_ORDEN e ID_FECHA_ENVIO (-1 si no se ha enviado).
 * **Medidas:** CANTIDAD, PRECIO_UNITARIO, DESCUENTO (entre 0 y 1), MONTO_BRUTO (cantidad por precio), MONTO_DESCUENTO, MONTO_TOTAL (bruto menos descuento) y DIAS_DESPACHO (días entre orden y envío, nulo si no se ha enviado).
 
 
