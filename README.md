@@ -93,4 +93,4 @@ El proceso de Extracción, Transformación y Carga (ETL) se está desarrollando 
 
 **Progreso de Carga de Dimensiones:**
 * **Dimensión Transportista:** Se implementó el flujo de datos (Data Flow) realizando una extracción directa desde la tabla origen `Transportista` hacia la tabla destino `[dbo].[Transportista]` en el DW. Se verificó el correcto mapeo de las columnas (ID, Nombre y Teléfono) logrando una transferencia exitosa de los registros sin errores de compatibilidad de metadatos.
-
+* **Dimensión Cliente:** Se implementó el flujo de datos integrando un componente de **Columna Derivada** para gestionar y limpiar los valores nulos del campo `CodigoPostal` mediante la función `REPLACENULL`, asegurando el cumplimiento de la restricción `NOT NULL` en el Data Warehouse. Se logró una transferencia exitosa de **91 filas** hacia la tabla destino `[dbo].[Cliente]`.
