@@ -89,7 +89,6 @@ GO;
 
 CREATE TABLE [dbo].[Detalle_venta](
 	[ID_DETALLE_VENTA] [int] IDENTITY(1,1) NOT NULL,
-	[ID_ORDEN]         [int]           NOT NULL,
 	[ID_CLIENTE]       [nchar](5)      NOT NULL,
 	[ID_EMPLEADO]      [int]           NOT NULL,
 	[ID_TRANSPORTISTA] [int]           NOT NULL,
@@ -103,8 +102,7 @@ CREATE TABLE [dbo].[Detalle_venta](
 	[MONTO_DESCUENTO]  [decimal](14,2) NOT NULL,
 	[MONTO_TOTAL]      [decimal](14,2) NOT NULL,
 	[DIAS_DESPACHO]    [int]           NULL,
-CONSTRAINT [PK_Detalle_venta] PRIMARY KEY CLUSTERED ([ID_DETALLE_VENTA] ASC),
-CONSTRAINT [UQ_Detalle_venta_GRANO] UNIQUE ([ID_ORDEN], [ID_PROD])
+CONSTRAINT [PK_Detalle_venta] PRIMARY KEY CLUSTERED ([ID_DETALLE_VENTA] ASC)
 ) ON [PRIMARY]
 GO;
 
