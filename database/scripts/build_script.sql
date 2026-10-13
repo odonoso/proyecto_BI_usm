@@ -1,26 +1,27 @@
 USE [master]
-GO;
+GO
+
 IF DB_ID('KentFoodsDW') IS NOT NULL
 BEGIN
     ALTER DATABASE [KentFoodsDW] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
     DROP DATABASE [KentFoodsDW];
 END
-GO;
+GO
+
 CREATE DATABASE [KentFoodsDW]
-GO;
+GO
+
 USE [KentFoodsDW]
-GO;
+GO
 
 -- dimension transportista
-
 CREATE TABLE [dbo].[Transportista](
     [ID_TRANSPORTISTA]     [int]           NOT NULL,
 	[NOMBRE_TRANSPORTISTA] [nvarchar](100) NOT NULL,
 	[TELEFONO]             [nvarchar](30)  NOT NULL,
 CONSTRAINT [PK_Transportista] PRIMARY KEY CLUSTERED ([ID_TRANSPORTISTA] ASC)
 ) ON [PRIMARY]
-GO;
-
+GO
 
 --dimension producto
 
@@ -38,7 +39,7 @@ CREATE TABLE [dbo].[Producto](
 	[DIRECCION]             [nvarchar](150) NOT NULL,
 CONSTRAINT [PK_Producto] PRIMARY KEY CLUSTERED ([ID_PROD] ASC)
 ) ON [PRIMARY]
-GO;
+GO
 
 --dimension empleado
 
@@ -55,7 +56,7 @@ CREATE TABLE [dbo].[Empleado](
     [TERRITORIO]         [nvarchar](500) NOT NULL,
 CONSTRAINT [PK_Empleado] PRIMARY KEY CLUSTERED ([ID_EMPLEADO] ASC)
 ) ON [PRIMARY]
-GO;
+GO
 
 -- dimension Cliente
 
@@ -70,7 +71,7 @@ CREATE TABLE [dbo].[Cliente](
 	[CODIGO_POSTAL] [nvarchar](20)  NOT NULL,
 CONSTRAINT [PK_Cliente] PRIMARY KEY CLUSTERED ([ID_CLIENTE] ASC)
 ) ON [PRIMARY]
-GO;
+GO
 
 -- dimension tiempo 
 
@@ -83,12 +84,12 @@ CREATE TABLE [dbo].[Tiempo](
 	[HORA]      [tinyint]      NOT NULL CONSTRAINT [DF_DIM_TIEMPO_HORA] DEFAULT (0),
 CONSTRAINT [PK_Tiempo] PRIMARY KEY CLUSTERED ([ID_TIEMPO] ASC)
 ) ON [PRIMARY]
-GO;
+GO
 
 -- dimension detalle_venta
 
 CREATE TABLE [dbo].[Detalle_venta](
-	[ID_DETALLE_VENTA] [int] IDENTITY(1,1) NOT NULL,
+	[ID_DETALLE_VENTA] [int]           NOT NULL,
 	[ID_CLIENTE]       [nchar](5)      NOT NULL,
 	[ID_EMPLEADO]      [int]           NOT NULL,
 	[ID_TRANSPORTISTA] [int]           NOT NULL,
@@ -104,7 +105,7 @@ CREATE TABLE [dbo].[Detalle_venta](
 	[DIAS_DESPACHO]    [int]           NULL,
 CONSTRAINT [PK_Detalle_venta] PRIMARY KEY CLUSTERED ([ID_DETALLE_VENTA] ASC)
 ) ON [PRIMARY]
-GO;
+GO
 
 --claves foraneas
 
