@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="22"
-  DTS:VersionGUID="{FAFD3D69-78D7-498B-AD11-B6F0B9DFE289}">
+  DTS:VersionBuild="28"
+  DTS:VersionGUID="{CBE92363-F286-42FD-B8C4-7CB138E98174}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -778,12 +778,6 @@
                       externalMetadataColumnId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DIAS_DESPACHO]"
                       lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].Columns[DIAS_DESPACHO]" />
                     <inputColumn
-                      refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ID_ORDEN]"
-                      cachedDataType="i4"
-                      cachedName="ID_ORDEN"
-                      externalMetadataColumnId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID_ORDEN]"
-                      lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].Columns[ID_ORDEN]" />
-                    <inputColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MONTO_DESCUENTO]"
                       cachedDataType="r4"
                       cachedName="MONTO_DESCUENTO"
@@ -795,17 +789,15 @@
                       cachedName="ID_PROD"
                       externalMetadataColumnId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID_PROD]"
                       lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].Columns[ID_PROD]" />
+                    <inputColumn
+                      refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ID_ORDEN]"
+                      cachedDataType="i4"
+                      cachedName="ID_ORDEN"
+                      externalMetadataColumnId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID_ORDEN]"
+                      lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].Columns[ID_ORDEN]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID_DETALLE_VENTA]"
-                      dataType="i4"
-                      name="ID_DETALLE_VENTA" />
-                    <externalMetadataColumn
-                      refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID_ORDEN]"
-                      dataType="i4"
-                      name="ID_ORDEN" />
                     <externalMetadataColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID_CLIENTE]"
                       dataType="wstr"
@@ -869,6 +861,10 @@
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DIAS_DESPACHO]"
                       dataType="i4"
                       name="DIAS_DESPACHO" />
+                    <externalMetadataColumn
+                      refId="Package\Cargar Dim_Detalle_Venta\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID_ORDEN]"
+                      dataType="i4"
+                      name="ID_ORDEN" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -923,42 +919,57 @@
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
-    o.OrdenID AS ID_ORDEN,
+
+    -- Llaves de la tabla de hechos
+
+    d.OrdenID AS ID_ORDEN,
+
+    d.ProductoID AS ID_PROD,
+ -- Llaves Foraneas (Dimensiones)
+
     o.ClienteID AS ID_CLIENTE,
+
     o.EmpleadoID AS ID_EMPLEADO,
 
     o.EnviadoPor AS ID_TRANSPORTISTA,
 
-    d.ProductoID AS ID_PROD,
- 
--- Llaves foráneas hacia la tabla Tiempo (formato YYYYMMDD)
-    
-CAST(FORMAT(o.FechaOrden, 'yyyyMMdd') AS INT) AS ID_FECHA_ORDEN,
+-- Llaves Foraneas (Tiempo)
+ISNULL(CAST(FORMAT(o.FechaOrden, 'yyyyMMdd') AS INT), 20180101) AS ID_FECHA_ORDEN,
 
-    ISNULL(CAST(FORMAT(o.FechaEnvio, 'yyyyMMdd') AS INT),
- 20180101) AS ID_FECHA_ENVIO,
 
+ISNULL(CAST(FORMAT(o.FechaEnvio, 'yyyyMMdd') AS INT), 20180101) AS ID_FECHA_ENVIO,
     
-    -- Métricas base del detalle
+    
+
+-- Metricas base con validación de tipos y nulos
 
     d.Cantidad AS CANTIDAD,
 
-    d.PrecioUnitario AS PRECIO_UNITARIO,
+    CAST(d.PrecioUnitario AS DECIMAL(10,2)) AS PRECIO_UNITARIO,
+ 
+    CAST(ISNULL(d.Descuento, 0) AS DECIMAL(5,4)) AS DESCUENTO,
 
-    d.Descuento AS DESCUENTO,
 
+-- KPIs Calculados 
+    
+     CAST((d.Cantidad * d.PrecioUnitario) AS DECIMAL(14,2)) AS MONTO_BRUTO,
 
     
-    -- Métricas calculadas para los KPIs
+  CAST((d.Cantidad * d.PrecioUnitario * ISNULL(d.Descuento, 0)) AS DECIMAL(14,2)) AS MONTO_DESCUENTO,
 
-    (d.Cantidad * d.PrecioUnitario) AS MONTO_BRUTO,
+  
+    CAST(((d.Cantidad * d.PrecioUnitario) * (1 - ISNULL(d.Descuento, 0))) AS DECIMAL(14,2)) AS MONTO_TOTAL,
 
-    (d.Cantidad * d.PrecioUnitario * d.Descuento) AS MONTO_DESCUENTO,
-
-    ((d.Cantidad * d.PrecioUnitario) - (d.Cantidad * d.PrecioUnitario * d.Descuento)) AS MONTO_TOTAL,
-
+    
+    
+-- KPI de tiempos
+    
     ISNULL(DATEDIFF(day, o.FechaOrden, o.FechaEnvio), 0) AS DIAS_DESPACHO
+
+
+
 FROM DetalleOrden d
+
 INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
                 <property
                   dataType="System.String"
@@ -1152,24 +1163,34 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
                       name="CANTIDAD" />
                     <externalMetadataColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PRECIO_UNITARIO]"
-                      dataType="cy"
-                      name="PRECIO_UNITARIO" />
+                      dataType="numeric"
+                      name="PRECIO_UNITARIO"
+                      precision="10"
+                      scale="2" />
                     <externalMetadataColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DESCUENTO]"
-                      dataType="r4"
-                      name="DESCUENTO" />
+                      dataType="numeric"
+                      name="DESCUENTO"
+                      precision="5"
+                      scale="4" />
                     <externalMetadataColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MONTO_BRUTO]"
-                      dataType="cy"
-                      name="MONTO_BRUTO" />
+                      dataType="numeric"
+                      name="MONTO_BRUTO"
+                      precision="14"
+                      scale="2" />
                     <externalMetadataColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MONTO_DESCUENTO]"
-                      dataType="r4"
-                      name="MONTO_DESCUENTO" />
+                      dataType="numeric"
+                      name="MONTO_DESCUENTO"
+                      precision="14"
+                      scale="2" />
                     <externalMetadataColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MONTO_TOTAL]"
-                      dataType="r4"
-                      name="MONTO_TOTAL" />
+                      dataType="numeric"
+                      name="MONTO_TOTAL"
+                      precision="14"
+                      scale="2" />
                     <externalMetadataColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DIAS_DESPACHO]"
                       dataType="i4"
@@ -1232,29 +1253,39 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
                       name="CANTIDAD" />
                     <outputColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PRECIO_UNITARIO]"
-                      dataType="cy"
+                      dataType="numeric"
                       lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PRECIO_UNITARIO]"
-                      name="PRECIO_UNITARIO" />
+                      name="PRECIO_UNITARIO"
+                      precision="10"
+                      scale="2" />
                     <outputColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DESCUENTO]"
-                      dataType="r4"
+                      dataType="numeric"
                       lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DESCUENTO]"
-                      name="DESCUENTO" />
+                      name="DESCUENTO"
+                      precision="5"
+                      scale="4" />
                     <outputColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MONTO_BRUTO]"
-                      dataType="cy"
+                      dataType="numeric"
                       lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MONTO_BRUTO]"
-                      name="MONTO_BRUTO" />
+                      name="MONTO_BRUTO"
+                      precision="14"
+                      scale="2" />
                     <outputColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MONTO_DESCUENTO]"
-                      dataType="r4"
+                      dataType="numeric"
                       lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MONTO_DESCUENTO]"
-                      name="MONTO_DESCUENTO" />
+                      name="MONTO_DESCUENTO"
+                      precision="14"
+                      scale="2" />
                     <outputColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MONTO_TOTAL]"
-                      dataType="r4"
+                      dataType="numeric"
                       lineageId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MONTO_TOTAL]"
-                      name="MONTO_TOTAL" />
+                      name="MONTO_TOTAL"
+                      precision="14"
+                      scale="2" />
                     <outputColumn
                       refId="Package\Cargar Dim_Detalle_Venta\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DIAS_DESPACHO]"
                       dataType="i4"
@@ -2823,101 +2854,33 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
         <NodeLayout
-          Size="205,42"
-          Id="Package\Cargar Dim_Transportista"
-          TopLeft="38,41" />
-        <NodeLayout
           Size="176,42"
           Id="Package\Cargar Dim_Cliente"
-          TopLeft="42,146" />
-        <NodeLayout
-          Size="185,42"
-          Id="Package\Cargar Dim_Producto"
-          TopLeft="44,285" />
-        <NodeLayout
-          Size="191,42"
-          Id="Package\Cargar Dim_Empleado"
-          TopLeft="45,387" />
+          TopLeft="282,99" />
         <NodeLayout
           Size="210,42"
           Id="Package\Cargar Dim_Detalle_Venta"
-          TopLeft="316,230" />
+          TopLeft="259,406" />
+        <NodeLayout
+          Size="191,42"
+          Id="Package\Cargar Dim_Empleado"
+          TopLeft="267,238" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\Cargar Dim_Producto"
+          TopLeft="271,169" />
+        <NodeLayout
+          Size="205,42"
+          Id="Package\Cargar Dim_Transportista"
+          TopLeft="268,24" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\Cargar Dim_Transportista">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="157,42"
-          Id="Package\Cargar Dim_Transportista\OLE DB Source"
-          TopLeft="98,95" />
-        <NodeLayout
-          Size="177,42"
-          Id="Package\Cargar Dim_Transportista\OLE DB Destination"
-          TopLeft="89,232" />
-        <EdgeLayout
-          Id="Package\Cargar Dim_Transportista.Paths[OLE DB Source Output]"
-          TopLeft="177,137">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,95"
-              Start="0,0"
-              End="0,87.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,87.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Cargar Dim_Transportista\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Cargar Dim_Transportista\OLE DB Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
     design-time-name="Package\Cargar Dim_Cliente">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="157,42"
-          Id="Package\Cargar Dim_Cliente\OLE DB Source"
-          TopLeft="102,84" />
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="177,42"
           Id="Package\Cargar Dim_Cliente\OLE DB Destination"
@@ -2926,6 +2889,10 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
           Size="158,42"
           Id="Package\Cargar Dim_Cliente\Derived Column"
           TopLeft="103,196" />
+        <NodeLayout
+          Size="157,42"
+          Id="Package\Cargar Dim_Cliente\OLE DB Source"
+          TopLeft="102,84" />
         <EdgeLayout
           Id="Package\Cargar Dim_Cliente.Paths[OLE DB Source Output]"
           TopLeft="181.25,126">
@@ -2945,7 +2912,9 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -2967,25 +2936,14 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Cargar Dim_Cliente\OLE DB Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Cargar Dim_Cliente\OLE DB Destination">
     <Properties>
@@ -2999,59 +2957,46 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Cargar Dim_Cliente\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <TaskHost
-    design-time-name="Package\Cargar Dim_Producto">
+    design-time-name="Package\Cargar Dim_Detalle_Venta">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="157,42"
-          Id="Package\Cargar Dim_Producto\OLE DB Source"
-          TopLeft="121,96" />
+          Id="Package\Cargar Dim_Detalle_Venta\OLE DB Source"
+          TopLeft="390,74" />
         <NodeLayout
           Size="177,42"
-          Id="Package\Cargar Dim_Producto\OLE DB Destination"
-          TopLeft="114,386" />
-        <NodeLayout
-          Size="161,42"
-          Id="Package\Cargar Dim_Producto\Data Conversion"
-          TopLeft="123,249" />
+          Id="Package\Cargar Dim_Detalle_Venta\OLE DB Destination"
+          TopLeft="382,251" />
         <EdgeLayout
-          Id="Package\Cargar Dim_Producto.Paths[OLE DB Source Output]"
-          TopLeft="201.5,138">
+          Id="Package\Cargar Dim_Detalle_Venta.Paths[OLE DB Source Output]"
+          TopLeft="469.5,116">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,111"
+              EndConnector="0,135"
               Start="0,0"
-              End="0,103.5">
+              End="0,127.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,103.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Cargar Dim_Producto.Paths[Data Conversion Output]"
-          TopLeft="203,291">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,95"
-              Start="0,0"
-              End="0,87.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,87.5" />
+                    End="0,127.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3064,7 +3009,7 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Cargar Dim_Producto\OLE DB Source">
+    design-time-name="Package\Cargar Dim_Detalle_Venta\OLE DB Destination">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -3077,15 +3022,10 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Cargar Dim_Producto\OLE DB Destination">
+    design-time-name="Package\Cargar Dim_Detalle_Venta\OLE DB Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -3093,15 +3033,15 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
     design-time-name="Package\Cargar Dim_Empleado">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="177,42"
-          Id="Package\Cargar Dim_Empleado\OLE DB Destination"
-          TopLeft="82,262" />
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="157,42"
           Id="Package\Cargar Dim_Empleado\OLE DB Source"
           TopLeft="100,78" />
+        <NodeLayout
+          Size="177,42"
+          Id="Package\Cargar Dim_Empleado\OLE DB Destination"
+          TopLeft="82,262" />
         <EdgeLayout
           Id="Package\Cargar Dim_Empleado.Paths[OLE DB Source Output]"
           TopLeft="178.5,120">
@@ -3133,7 +3073,9 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -3166,65 +3108,154 @@ LEFT JOIN Proveedores pr ON p.ProveedorID = pr.ProveedorID</property>
     </Properties>
   </PipelineComponentMetadata>
   <TaskHost
-    design-time-name="Package\Cargar Dim_Detalle_Venta">
+    design-time-name="Package\Cargar Dim_Producto">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="157,42"
-          Id="Package\Cargar Dim_Detalle_Venta\OLE DB Source"
-          TopLeft="39,38" />
+          Id="Package\Cargar Dim_Producto\OLE DB Source"
+          TopLeft="121,96" />
         <NodeLayout
           Size="177,42"
-          Id="Package\Cargar Dim_Detalle_Venta\OLE DB Destination"
-          TopLeft="41,231" />
+          Id="Package\Cargar Dim_Producto\OLE DB Destination"
+          TopLeft="114,386" />
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Cargar Dim_Producto\Data Conversion"
+          TopLeft="123,249" />
         <EdgeLayout
-          Id="Package\Cargar Dim_Detalle_Venta.Paths[OLE DB Source Output]"
-          TopLeft="117.5,80">
+          Id="Package\Cargar Dim_Producto.Paths[OLE DB Source Output]"
+          TopLeft="201.5,138">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="12,151"
+              EndConnector="0,111"
               Start="0,0"
-              End="12,143.5">
+              End="0,103.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,71.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,71.5"
-                    Point2="0,75.5"
-                    Point3="4,75.5" />
-                  <mssgle:LineSegment
-                    End="8,75.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="8,75.5"
-                    Point2="12,75.5"
-                    Point3="12,79.5" />
-                  <mssgle:LineSegment
-                    End="12,143.5" />
+                    End="0,103.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Cargar Dim_Producto.Paths[Data Conversion Output]"
+          TopLeft="203,291">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,95"
+              Start="0,0"
+              End="0,87.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,87.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Cargar Dim_Detalle_Venta\OLE DB Source">
+    design-time-name="Package\Cargar Dim_Producto\OLE DB Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
       </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Cargar Dim_Detalle_Venta\OLE DB Destination">
+    design-time-name="Package\Cargar Dim_Producto\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Cargar Dim_Transportista">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="157,42"
+          Id="Package\Cargar Dim_Transportista\OLE DB Source"
+          TopLeft="98,95" />
+        <NodeLayout
+          Size="177,42"
+          Id="Package\Cargar Dim_Transportista\OLE DB Destination"
+          TopLeft="89,232" />
+        <EdgeLayout
+          Id="Package\Cargar Dim_Transportista.Paths[OLE DB Source Output]"
+          TopLeft="177,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,95"
+              Start="0,0"
+              End="0,87.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,87.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Cargar Dim_Transportista\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Cargar Dim_Transportista\OLE DB Source">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

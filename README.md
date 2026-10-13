@@ -80,9 +80,26 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 
 
+## Script SQL (build_script.sql)
 
+Creación de la base de datos del modelo dimensional
 
+La base KentFoodsDW se crea con un modelo en estrella: 5 dimensiones (Transportista, Producto, Empleado, Cliente y Tiempo) y 1 tabla de hechos (Detalle_venta), unidas por claves foráneas. El script borra y recrea la base, así que puede ejecutarse más de una vez.
 
+**Transportista:** empresa que despacha el pedido. Campos: ID_TRANSPORTISTA (clave primaria), NOMBRE_TRANSPORTISTA y TELEFONO.
+
+**Producto:** productos vendidos, con su categoría y proveedor aplanados en una sola tabla. Campos: ID_PROD (clave primaria), NOMBRE_PRODUCTO, CANTIDAD_POR_UNIDAD, PRECIO_UNITARIO (precio de lista), CATEGORIA, DESCRIPCION_CATEGORIA, NOMBRE_PROVEEDOR, CONTACTO_PROVEEDOR, CIUDAD_PROVEEDOR, PAIS_PROVEEDOR y DIRECCION (del proveedor).
+
+**Empleado:** empleados que gestionan las ventas y su ubicación. Campos: ID_EMPLEADO (clave primaria), NOMBRE, APELLIDO, CARGO, FECHA_NACIMIENTO, FECHA_CONTRATACION, DIRECCION, CIUDAD, PAIS y TERRITORIO (territorios atendidos, concatenados en un solo texto).
+
+**Cliente:** empresas que compran. Campos: ID_CLIENTE (clave primaria), EMPRESA, CONTACTO, CARGO, DIRECCION, CIUDAD, PAIS y CODIGO_POSTAL.
+
+**Tiempo:** calendario generado por script, usado para la fecha de orden y la de envío. Campos: ID_TIEMPO (clave primaria, formato AAAAMMDD), AÑO, MES, NOMBRE_MES, DIA y HORA.
+
+**Detalle_venta:** tabla de hechos, con una fila por producto dentro de una orden.
+
+* **Claves:** ID_DETALLE_VENTA (clave primaria autoincremental), y las claves foráneas ID_CLIENTE, ID_EMPLEADO, ID_TRANSPORTISTA, ID_PROD, ID_FECHA_ORDEN e ID_FECHA_ENVIO (-1 si no se ha enviado).
+* **Medidas:** CANTIDAD, PRECIO_UNITARIO, DESCUENTO (entre 0 y 1), MONTO_BRUTO (cantidad por precio), MONTO_DESCUENTO, MONTO_TOTAL (bruto menos descuento) y DIAS_DESPACHO (días entre orden y envío, nulo si no se ha enviado).
 
 
 ## Proceso ETL 

@@ -1,3 +1,7 @@
 .vs/
 *.user
 to_save*
+*.suo
+*.ispac
+[Bb]in/
+[Oo]bj/
