@@ -46,7 +46,7 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 ### Esquema dimensional 
 
-![](docs/modelo-dimensional/Fact.png)
+![](docs/modelo-dimensional/modelo dimensional.png)
 
 
 ## KPIs definidos
