@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="31"
-  DTS:VersionGUID="{3988BE0A-F60F-4CD4-9359-B3AC486F3B24}">
+  DTS:VersionBuild="42"
+  DTS:VersionGUID="{C2B756F0-7BDD-4FBF-8BBA-8512CAE05C62}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -1219,7 +1219,7 @@ LEFT JOIN Territorios t ON te.TerritorioID = t.TerritorioID</property>
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      length="4000"
+                      length="300"
                       lineageId="Package\Cargar Dim_Producto\Data Conversion.Outputs[Data Conversion Output].Columns[Desc_convertida]"
                       name="Desc_convertida"
                       truncationRowDisposition="FailComponent">
@@ -1405,7 +1405,7 @@ LEFT JOIN Territorios t ON te.TerritorioID = t.TerritorioID</property>
                     <inputColumn
                       refId="Package\Cargar Dim_Producto\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Desc_convertida]"
                       cachedDataType="wstr"
-                      cachedLength="4000"
+                      cachedLength="300"
                       cachedName="Desc_convertida"
                       externalMetadataColumnId="Package\Cargar Dim_Producto\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DESCRIPCION_CATEGORIA]"
                       lineageId="Package\Cargar Dim_Producto\Data Conversion.Outputs[Data Conversion Output].Columns[Desc_convertida]" />
@@ -2841,6 +2841,23 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
+      DTS:refId="Package\Limpiar Data Warehouse"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{315B1C7D-8901-47ED-B2DE-208F31E850D8}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Limpiar Data Warehouse"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{630ED92C-84A0-453B-91C9-1858CC0A9731}"
+          SQLTask:SqlStatementSource="DELETE FROM Fact_Detalle_venta;&#xA;DELETE FROM Dim_Cliente;&#xA;DELETE FROM Dim_Empleado;&#xA;DELETE FROM Dim_Transportista;&#xA;DELETE FROM Dim_Producto;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
       DTS:refId="Package\Poblar Dim_Tiempo"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
@@ -2862,7 +2879,7 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{F5679B7E-D33F-45DC-A6CD-4ECC0B4D983A}"
+      DTS:DTSID="{EF081551-2A19-4FF9-8519-403823C16216}"
       DTS:From="Package\Cargar Dim_Transportista"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
@@ -2870,7 +2887,7 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{F7CE0002-C88D-4553-A282-1FAAD0D4B1BC}"
+      DTS:DTSID="{8AD631C8-F158-4A8E-98F5-ACFC1589689B}"
       DTS:From="Package\Cargar Dim_Cliente"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
@@ -2878,7 +2895,7 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{1325F7C9-C4DB-4DE0-8AAE-753A30AE99E6}"
+      DTS:DTSID="{7B8CE300-D424-4CBF-B0C8-F8D56B128270}"
       DTS:From="Package\Cargar Dim_Producto"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -2899,6 +2916,14 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 4"
       DTS:To="Package\Cargar Dim_Transportista" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{A9D09A8B-95D8-4805-A405-F78D6159F846}"
+      DTS:From="Package\Limpiar Data Warehouse"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Poblar Dim_Tiempo" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2915,26 +2940,74 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
         <NodeLayout
           Size="176,42"
           Id="Package\Cargar Dim_Cliente"
-          TopLeft="286,99" />
-        <NodeLayout
-          Size="212,42"
-          Id="Package\Cargar Fact_Detalle_Venta"
-          TopLeft="268,342" />
+          TopLeft="87,286" />
         <NodeLayout
           Size="191,42"
           Id="Package\Cargar Dim_Empleado"
-          TopLeft="271,238" />
+          TopLeft="72,425" />
         <NodeLayout
           Size="185,42"
           Id="Package\Cargar Dim_Producto"
-          TopLeft="275,169" />
+          TopLeft="76,357" />
         <NodeLayout
           Size="205,42"
           Id="Package\Cargar Dim_Transportista"
-          TopLeft="272,24" />
+          TopLeft="73,211" />
+        <NodeLayout
+          Size="212,42"
+          Id="Package\Cargar Fact_Detalle_Venta"
+          TopLeft="67,529" />
+        <NodeLayout
+          Size="176,42"
+          Id="Package\Poblar Dim_Tiempo"
+          TopLeft="91,143" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="170.25,467">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,62"
+              Start="0,0"
+              End="0,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="177.25,185">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,26"
+              Start="0,0"
+              End="0,18.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="374.25,66">
+          TopLeft="175.25,253">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -2956,18 +3029,18 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="370.75,141">
+          TopLeft="171.75,328">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,28"
+              EndConnector="0,29"
               Start="0,0"
-              End="0,20.5">
+              End="0,21.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.5" />
+                    End="0,21.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2978,40 +3051,18 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="367,211">
+          TopLeft="168,399">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,27"
+              EndConnector="0,26"
               Start="0,0"
-              End="0,19.5">
+              End="0,18.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,19.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="370.25,280">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,62"
-              Start="0,0"
-              End="0,54.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,54.5" />
+                    End="0,18.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3021,35 +3072,23 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <NodeLayout
-          Size="176,42"
-          Id="Package\Poblar Dim_Tiempo"
-          TopLeft="33,43" />
+          Size="201,42"
+          Id="Package\Limpiar Data Warehouse"
+          TopLeft="80,48" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="209,64">
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="179.75,90">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="63,-19"
+              EndConnector="0,53"
               Start="0,0"
-              End="55.5,-19">
+              End="0,45.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="27.5,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="27.5,0"
-                    Point2="31.5,0"
-                    Point3="31.5,-4" />
-                  <mssgle:LineSegment
-                    End="31.5,-15" />
-                  <mssgle:CubicBezierSegment
-                    Point1="31.5,-15"
-                    Point2="31.5,-19"
-                    Point3="35.5,-19" />
-                  <mssgle:LineSegment
-                    End="55.5,-19" />
+                    End="0,45.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3152,65 +3191,6 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
     </Properties>
   </PipelineComponentMetadata>
   <TaskHost
-    design-time-name="Package\Cargar Fact_Detalle_Venta">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="157,42"
-          Id="Package\Cargar Fact_Detalle_Venta\OLE DB Source"
-          TopLeft="390,74" />
-        <NodeLayout
-          Size="177,42"
-          Id="Package\Cargar Fact_Detalle_Venta\OLE DB Destination"
-          TopLeft="382,251" />
-        <EdgeLayout
-          Id="Package\Cargar Fact_Detalle_Venta.Paths[OLE DB Source Output]"
-          TopLeft="469.5,116">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,135"
-              Start="0,0"
-              End="0,127.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,127.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Cargar Fact_Detalle_Venta\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Cargar Fact_Detalle_Venta\OLE DB Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
     design-time-name="Package\Cargar Dim_Empleado">
     <LayoutInfo>
       <GraphLayout
@@ -3302,21 +3282,21 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
         <NodeLayout
           Size="161,42"
           Id="Package\Cargar Dim_Producto\Data Conversion"
-          TopLeft="123,249" />
+          TopLeft="121,253" />
         <EdgeLayout
           Id="Package\Cargar Dim_Producto.Paths[OLE DB Source Output]"
-          TopLeft="201.5,138">
+          TopLeft="200.5,138">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,111"
+              EndConnector="0,115"
               Start="0,0"
-              End="0,103.5">
+              End="0,107.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,103.5" />
+                    End="0,107.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3327,18 +3307,18 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Cargar Dim_Producto.Paths[Data Conversion Output]"
-          TopLeft="203,291">
+          TopLeft="202,295">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,95"
+              EndConnector="0,91"
               Start="0,0"
-              End="0,87.5">
+              End="0,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,87.5" />
+                    End="0,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3437,6 +3417,65 @@ INNER JOIN Ordenes o ON d.OrdenID = o.OrdenID;</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Cargar Fact_Detalle_Venta">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="157,42"
+          Id="Package\Cargar Fact_Detalle_Venta\OLE DB Source"
+          TopLeft="390,74" />
+        <NodeLayout
+          Size="177,42"
+          Id="Package\Cargar Fact_Detalle_Venta\OLE DB Destination"
+          TopLeft="382,251" />
+        <EdgeLayout
+          Id="Package\Cargar Fact_Detalle_Venta.Paths[OLE DB Source Output]"
+          TopLeft="469.5,116">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,135"
+              Start="0,0"
+              End="0,127.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,127.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Cargar Fact_Detalle_Venta\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Cargar Fact_Detalle_Venta\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
