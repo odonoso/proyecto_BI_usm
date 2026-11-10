@@ -1,35 +1,33 @@
-# Proyecto de Inteligencia de Negocios: Kent Foods
+# Proyecto de Inteligencia de Negocios: Kent Foods 
 
 
-## Información de equipo de trabajo
-- Felipe Gamboa
-- Osvaldo Donoso
-- Gonzalo Cayupil
+## Información de equipo de trabajo (Fase 1)
+- Felipe Gamboa Olivares
+- Osvaldo Donoso Alarcon
+- Gonzalo Cayupil Duque
 
 
-## Sección y Asignatura
+## Sección y Asignatura (Fase 1)
 - **Asignatura**: Inteligencia de negocios
 - **Sección**: Paralelo 300
 - **Docente**: Hernan Marcelo Saavedra Gonzalez
 
 
-## Caso Seleccionado:
+## Caso Seleccionado (Fase 1)
 
 El caso de estudio corresponde a la empresa **Kent Foods**, una organización comercial dedicada a la venta y distribución de productos alimenticios mediante despachos a domicilio y envíos. La compañía ha experimentado un crecimiento acelerado durante los últimos años, lo que ha generado una acumulación significativa de registros operacionales en su base de datos transaccional (cubriendo clientes, colaboradores, catálogo de alimentos, proveedores, transportistas y órdenes de compra con sus respectivos detalles). Ante esta expansión, el propietario de la organización requiere incorporar una arquitectura de Inteligencia de Negocios que permita transformar dichos registros operativos en información estructurada para la toma oportuna de decisiones.
 
 
-
-
-## Descripción del problema
+## Descripción del problema (Fase 1)
 
 Debido al rápido crecimiento en el volumen de operaciones de Kent Foods, los directivos y encargados de área enfrentan dificultades para evaluar el desempeño real del negocio a partir de su base de datos relacional transaccional (OLTP).
 
-## Objetivo del Proyecto
+## Objetivo del Proyecto (Fase 1)
 
 Diseñar e implementar una solución de Inteligencia de Negocios para la empresa Kent Foods, estructurando un Data Warehouse dimensional mediante la metodología Kimball y desarrollando un flujo automatizado de Extracción, Transformación y Carga (ETL) en SQL Server Integration Services (SSIS), con el fin de suministrar información confiable y métricas consolidadas que optimicen la toma de decisiones estratégicas del propietario y la gerencia.
 
 
-## Creación del modelo dimensional
+## Creación del modelo dimensional (Fase 1)
 
 Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELLA**", que nos ayudará a desnormalizar las tablas operacionales y optimizar las consultas SQL
 
@@ -42,14 +40,14 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 - **Medidas**: cantidad, precio_unitario, descuento, monto_bruto(**cantidad x precio_unitario**), monto_descuento(**cantidad x precio_unitario x descuento**), monto_total (**monto_bruto - monto_descuento**), dias_despacho
 
-- **Tabla de hechos**: FACT_DETALLE_VENTA, la cual almacena las claves foráneas de las dimensiones (id_cliente, id_producto, id_empleado, id_fecha_orden,id_fecha_envio, id_transportista)
+- **Tabla de hechos**: FACT_DETALLE_VENTA, la cual almacena la dimensión degenerada `id_orden` y las claves foráneas de las dimensiones (id_cliente, id_producto, id_empleado, id_fecha_orden, id_fecha_envio, id_transportista)
 
-### Esquema dimensional 
+### Esquema dimensional (Fase 1)
 
-![](docs/modelo-dimensional/modelo dimensional.png)
+![Modelo dimensional Kent Foods](docs/modelo-dimensional/modelo_dimensional.png)
 
 
-## KPIs definidos
+## KPIs definidos (Fase 1)
 
 - **Ventas Netas Totales**: 
     - **Fórmula analítica:** $\sum \text{MontoNeto} = \sum (\text{Cantidad} \times \text{PrecioUnitario} \times (1 - \text{Descuento}))$. 
@@ -81,7 +79,7 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
 
 
-## Script SQL (build_script.sql) y Estructura de Base de Datos
+## Script SQL (build_script.sql) y Estructura de Base de Datos (Fase 1)
 La base `KentFoodsDW` se crea con un modelo en estrella: 5 dimensiones y 1 tabla de hechos, unidas por claves foráneas. El script borra y recrea la base garantizando integridad estructural.
 
 - **Dim_Transportista:** Empresa que despacha el pedido. Campos: `ID_TRANSPORTISTA` (PK), `NOMBRE_TRANSPORTISTA` y `TELEFONO`.
@@ -90,10 +88,10 @@ La base `KentFoodsDW` se crea con un modelo en estrella: 5 dimensiones y 1 tabla
 - **Dim_Cliente:** Empresas que compran. Campos: `ID_CLIENTE` (PK), `EMPRESA`, `CONTACTO`, `CARGO`, `DIRECCION`, `CIUDAD`, `PAIS` y `CODIGO_POSTAL`.
 - **Dim_Tiempo:** Calendario utilizado para la fecha de orden y la de envío. Campos: `ID_TIEMPO` (PK, formato AAAAMMDD), `AÑO`, `MES`, `NOMBRE_MES`, `DIA` y `HORA`.
 - **Fact_Detalle_venta:** Tabla de hechos transaccional, con una fila por producto dentro de una orden (grano).
-  - **Claves:** Llave primaria compuesta por las claves naturales del negocio (`ID_ORDEN` e `ID_PROD`), cumpliendo estrictamente con el estándar dimensional. Incluye las claves foráneas `ID_CLIENTE`, `ID_EMPLEADO`, `ID_TRANSPORTISTA`, `ID_FECHA_ORDEN` e `ID_FECHA_ENVIO` (usando 20180101 como valor por defecto para nulos).
+- **Claves:** Llave primaria compuesta por todas las claves del grano: `ID_ORDEN` (dimensión degenerada), `ID_PROD`, `ID_CLIENTE`, `ID_EMPLEADO`, `ID_TRANSPORTISTA`, `ID_FECHA_ORDEN` e `ID_FECHA_ENVIO`. Las claves `ID_PROD`, `ID_CLIENTE`, `ID_EMPLEADO`, `ID_TRANSPORTISTA`, `ID_FECHA_ORDEN` e `ID_FECHA_ENVIO` son además claves foráneas hacia sus dimensiones (se usa 20180101 como valor por defecto para fechas nulas).
   - **Medidas:** `CANTIDAD`, `PRECIO_UNITARIO`, `DESCUENTO` (entre 0 y 1), `MONTO_BRUTO`, `MONTO_DESCUENTO`, `MONTO_TOTAL` y `DIAS_DESPACHO`. Definidas estrictamente como `DECIMAL(14,2)` para exactitud financiera.
 
-## Proceso ETL (SSIS)
+## Proceso ETL (SSIS) (Fase 1)
 El proceso de Extracción, Transformación y Carga (ETL) se desarrolló utilizando SQL Server Integration Services (SSIS) mediante Visual Studio, implementando un flujo de trabajo orquestado y 100% automatizado.
 
 **Arquitectura de Conexiones:**
@@ -110,4 +108,141 @@ El paquete ETL fue diseñado para ejecutarse en cascada mediante **Restricciones
 - **Dimensión Cliente:** Se integró un componente de Columna Derivada para gestionar los valores nulos del campo CodigoPostal mediante la función `REPLACENULL`, transfiriendo 91 filas hacia `[dbo].[Dim_Cliente]`.
 - **Dimensión Producto:** Se integraron las tablas Productos, Categorías y Proveedores. Se implementó un componente de Conversión de Datos para transformar tipos `ntext` a `DT_WSTR`, transfiriendo 77 filas hacia `[dbo].[Dim_Producto]`.
 - **Dimensión Empleado:** Se cargó uniendo Empleados y Territorios mediante una subconsulta con `MIN(TerritorioID)` para evitar duplicados. Carga exitosa de 49 filas en `[dbo].[Dim_Empleado]`.
-- **Tabla de Hechos (Fact_Detalle_venta):** Se configuró la carga de 2,155 filas operativas. Incorpora métricas precalculadas y blindadas mediante `CAST` explícito para encajar en el formato `DECIMAL(14,2)` del Data Warehouse. La inserción se realiza validando la unicidad del grano a través de la llave compuesta natural (`ID_ORDEN`, `ID_PROD`), garantizando un modelo analítico robusto y libre de duplicados.
+- **Tabla de Hechos (Fact_Detalle_venta):** Se configuró la carga de 2,155 filas operativas. Incorpora métricas precalculadas y blindadas mediante `CAST` explícito para encajar en el formato `DECIMAL(14,2)` del Data Warehouse.La unicidad del grano (una fila por producto dentro de una orden) queda garantizada por la llave primaria compuesta, formada por `ID_ORDEN` y todas las claves foráneas de las dimensiones, garantizando un modelo analítico robusto y libre de duplicados.
+
+
+## Cubo OLAP KentFoods (Fase 2)
+
+x
+x
+x
+x
+x
+x
+x
+
+## PowerBI de KentFoods (Fase 2)
+
+x
+x
+x
+x
+x
+x
+x
+
+## Tecnologías Utilizadas (Fase 2)
+
+Este proyecto utiliza el siguiente conjunto de herramientas y tecnologías para el desarrollo, gestión de bases de datos, integración, análisis y visualización de datos:
+
+
+
+*   **Visual Studio:** Entorno de desarrollo integrado principal. Usado en la creación del proceso ETL y Cubo MOLAP del proyecto
+
+*   **Visual Studio Code:** Editor de código. Usado para la creación de código SQL, scripts, documentación del readme y estructura del proyecto
+
+*   **SQL Server Management Studio (SSMS):** Ejecución de los scripts SQL (creación del DW, carga de dimensiones y tabla de hechos) y administración de las bases de datos.
+
+*   **SQL Server 2019 SSEI (SQL Server Express Edition / Evaluation / Installation):** Motor de base de datos donde se aloja la base transaccional `KentFoods` y el Data Warehouse `KentFoodsDW`. 
+*   **Microsoft.DataTools.IntegrationServices (SSIS):** Extensión de Visual Studio para SQL Server Integration Services (SSIS), utilizada para construir el proceso ETL.
+
+*   **Microsoft.DataTools.AnalysisServices (SSAS):** Extensión de Visual Studio para SQL Server Analysis Services (SSAS), utilizada para diseñar el cubo OLAP multidimensional. |
+
+*   **Power BI:**  Visualización de los KPIs y construcción del dashboard de la solución.
+
+*   **Github Desktop**: Usado para la actualización de cambios en el proyecto
+
+## Estructura del repositorio (Fase 2)
+
+```
+proyecto_bi_usm/
+├── .gitignore
+├── README.md
+├── database/
+│   ├── backup/
+│   │   └── KentFoodsDW_backup.bak
+│   └── scripts/
+│       ├── build_script.sql
+│       ├── cargar_dim_empleado.sql
+│       ├── cargar_dim_producto.sql
+│       ├── cargar_fact_detalle_venta.sql
+│       └── poblar_tiempo_script.sql
+├── docs/
+│   ├── modelo-dimensional/
+│   │   └── modelo dimensional.png
+│   └── presentacion/
+│       └── Proyecto BI Kent Foods.pptx
+├── etl/
+│   └── KentFoodETL/
+│       ├── KentFoodETL.database
+│       ├── KentFoodETL.dtproj
+│       ├── KentFoodETL.sln
+│       ├── Package.dtsx
+│       └── Project.params
+├── olep/
+│   ├── proyecto_sass/
+│   │   └── ProyectoMultidimensional1/
+│   │       ├── ProyectoMultidimensional1.sln
+│   │       └── ProyectoMultidimensional1/
+│   │           ├── Dim Cliente.dim
+│   │           ├── Dim Empleado.dim
+│   │           ├── Dim Producto.dim
+│   │           ├── Dim Tiempo.dim
+│   │           ├── Dim Transportista.dim
+│   │           ├── Kent Foods DW.cube
+│   │           ├── Kent Foods DW.ds
+│   │           ├── Kent Foods DW.dsv
+│   │           ├── Kent Foods DW.partitions
+│   │           ├── ProyectoMultidimensional1.database
+│   │           └── ProyectoMultidimensional1.dwproj
+│   └── to_save
+└── powerbi/
+    └── to_save
+
+```
+
+## Instrucciones de Ejecución y Revisión (Fase 2)
+
+
+#### Base de datos Dimensional (Osvaldo Donoso)
+
+x
+x
+x
+
+
+#### Proceso ETL (Gonzalo Cayupil)
+
+x
+x
+x
+
+#### Proceso de creación cubo MOLAP (Osvaldo Donoso)
+
+x
+x
+x
+
+#### Visualización de metricas en Power BI (Felipe Gamboa y Gonzalo Cayupil)
+
+x
+x
+x
+
+## Distribución de Responsabilidades y Aportes (Fase 2)
+
+### [Felipe Gamboa Olivaes] – Fase 1: Análisis del caso y diseño del modelo dimensional
+
+Fue responsable de la Fase 1 del proyecto, en la que se definió la base conceptual y el diseño analítico sobre el cual se construyeron las etapas posteriores (Data Warehouse, ETL y cubo OLAP). Sus aportes fueron:
+
+- **Planteamiento del caso y del problema:** Redactó la descripción del caso de estudio de Kent Foods y la problemática asociada a la evaluación del desempeño del negocio a partir de su base de datos transaccional (OLTP).
+- **Definición del objetivo:** Formuló el objetivo del proyecto, orientado a implementar una solución de Inteligencia de Negocios con un Data Warehouse dimensional (metodología Kimball) y un proceso ETL en SSIS.
+- **Diseño del modelo dimensional:** Eligió el esquema tipo estrella y definió el proceso de negocio (ventas y despacho de alimentos), la granularidad (un ítem de producto por venta), las cinco dimensiones (cliente, producto, empleado, tiempo y transportista), las medidas y la tabla de hechos `FACT_DETALLE_VENTA`, incluyendo la dimensión degenerada `id_orden` y sus claves foráneas.
+- **Diagrama del esquema dimensional:** Elaboró el diagrama del modelo en estrella incluido en la documentación.
+- **Definición de KPIs:** Estableció los cuatro indicadores clave del proyecto (Ventas Netas Totales, Concentración de Ventas por Categoría, Desempeño y Ranking de Proveedores, y Tiempo Promedio de Entrega y Despacho), con su fórmula analítica, dimensiones de análisis y justificación de negocio.
+- **Documentación inicial:** Redactó las secciones iniciales del README (equipo de trabajo, asignatura, caso, problema, objetivo, modelo dimensional y KPIs).
+
+
+
+
+... Sección en desarrollo
