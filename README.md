@@ -192,7 +192,7 @@ Este proyecto utiliza el siguiente conjunto de herramientas y tecnologías para 
 
 ## Estructura del Repositorio
 ```
-proyecto_bi_usm/
+proyecto_BI_usm/
 ├── .gitignore
 ├── README.md
 ├── database/
@@ -206,7 +206,7 @@ proyecto_bi_usm/
 │       └── poblar_tiempo_script.sql
 ├── docs/
 │   ├── modelo-dimensional/
-│   │   └── modelo dimensional.png
+│   │   └── modelo_dimensional.png
 │   └── presentacion/
 │       └── Proyecto BI Kent Foods.pptx
 ├── etl/
@@ -219,20 +219,20 @@ proyecto_bi_usm/
 ├── olep/
 │   ├── proyecto_sass/
 │   │   └── ProyectoMultidimensional1/
-│   │       ├── ProyectoMultidimensional1.sln
+│   │       ├── Kentfood_cube.sln
 │   │       └── ProyectoMultidimensional1/
-│   │           ├── Dim Cliente.dim
-│   │           ├── Dim Empleado.dim
-│   │           ├── Dim Producto.dim
-│   │           ├── Dim Tiempo.dim
-│   │           ├── Dim Transportista.dim
+│   │           ├── Cliente.dim
+│   │           ├── Empleado.dim
 │   │           ├── Kent Foods DW.cube
 │   │           ├── Kent Foods DW.ds
 │   │           ├── Kent Foods DW.dsv
 │   │           ├── Kent Foods DW.partitions
+│   │           ├── Kentfood_cube.dwproj
+│   │           ├── Producto.dim
 │   │           ├── ProyectoMultidimensional1.database
-│   │           └── ProyectoMultidimensional1.dwproj
+│   │           ├── Tiempo.dim
+│   │           └── Transportista.dim
 │   └── to_save
 └── powerbi/
-    └── to_save
+    └── KentFoods_DW_Reporte.pbix
 ```
