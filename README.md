@@ -114,14 +114,14 @@ El paquete ETL fue diseñado para ejecutarse en cascada mediante **Restricciones
 - **Dimensión Cliente:** Se integró un componente de Columna Derivada para gestionar los valores nulos del campo CodigoPostal mediante la función `REPLACENULL`, transfiriendo 91 filas hacia `[dbo].[Dim_Cliente]`.
 - **Dimensión Producto:** Se integraron las tablas Productos, Categorías y Proveedores. Se implementó un componente de Conversión de Datos para transformar tipos `ntext` a `DT_WSTR`, transfiriendo 77 filas hacia `[dbo].[Dim_Producto]`.
 - **Dimensión Empleado:** Se cargó uniendo Empleados y Territorios mediante una subconsulta con `MIN(TerritorioID)` para evitar duplicados. Carga exitosa de 49 filas en `[dbo].[Dim_Empleado]`.
-- **Tabla de Hechos (Fact_Detalle_venta):** Se configuró la carga de 2,155 filas operativas. Incorpora métricas precalculadas y blindadas mediante `CAST` explícito para encajar en el formato `DECIMAL(14,2)` del Data Warehouse.La unicidad del grano (una fila por producto dentro de una orden) queda garantizada por la llave primaria compuesta, formada por `ID_ORDEN` y todas las claves foráneas de las dimensiones, garantizando un modelo analítico robusto y libre de duplicados.
+- **Tabla de Hechos (Fact_Detalle_venta):** Se configuró la carga de 2,155 filas operativas. Incorpora métricas precalculadas y blindadas mediante `CAST` explícito para encajar en el formato `DECIMAL(14,2)` del Data Warehouse. La unicidad del grano (una fila por producto dentro de una orden) queda garantizada por la llave primaria compuesta, formada por `ID_ORDEN` y todas las claves foráneas de las dimensiones, garantizando un modelo analítico robusto y libre de duplicados.
 
 
 # **FASE 2 DEL PROYECTO**
 
 
 
-## Cubo OLAP KentFoods (Por modificar)
+## Cubo OLAP KentFoods
 
 El cubo `Kent Foods DW` se construyó con SQL Server Analysis Services
 (modo multidimensional, almacenamiento MOLAP) sobre el DW `KentFoodsDW`.
@@ -162,44 +162,35 @@ vinculada a la fecha de orden y a la de envío.
 | Ranking Proveedor | Posición del proveedor ordenado por MONTO TOTAL |
 | Tiempo Promedio Despacho (dias) | DIAS DESPACHO / Recuento Dias Despacho |
 
-**Validación.** [Captura del Navegador con cada KPI]. Ejemplo:
+**Validación.** Ejemplo de consulta MDX utilizada:
 `SELECT {[Measures].[Ventas Netas Totales]} ON 0,
 [Dim Producto].[CATEGORIA].[CATEGORIA].Members ON 1 FROM [Kent Foods DW]`
-Cotejado contra: `SELECT CATEGORIA, SUM(MONTO_TOTAL) ... GROUP BY CATEGORIA`.
+Cotejado contra consultas SQL tradicionales sobre el DW.
 
 
-## PowerBI de KentFoods (Por insertar Imagen)
+## PowerBI de KentFoods
 
-x
-x
-x
-x
-x
-x
-x
+Dashboard interactivo implementado mediante Power BI Desktop conectándose en modo *Live Connection* al cubo OLAP local (`localhost:2383`, base de datos `Kentfood_cube`), permitiendo el análisis gerencial estructurado en 4 vistas clave:
+- **Resumen global KPI** (Tarjetas generales con montos consolidados).
+- **Evolución de Ventas en el tiempo** (Gráficos de tendencia temporal).
+- **Venta x Categoria** (Distribución comercial por líneas de alimentos).
+- **Venta x Cliente** (Rendimiento y compras por cuenta corporativa).
+
 
 ## Tecnologías Utilizadas 
 
 Este proyecto utiliza el siguiente conjunto de herramientas y tecnologías para el desarrollo, gestión de bases de datos, integración, análisis y visualización de datos:
 
-
-*   **Visual Studio:** Entorno de desarrollo integrado principal. Usado en la creación del proceso ETL y Cubo MOLAP del proyecto
-
-*   **Visual Studio Code:** Editor de código. Usado para la creación de código SQL, scripts, documentación del readme y estructura del proyecto
-
+*   **Visual Studio:** Entorno de desarrollo integrado principal. Usado en la creación del proceso ETL y Cubo MOLAP del proyecto.
+*   **Visual Studio Code:** Editor de código. Usado para la creación de código SQL, scripts, documentación del readme y estructura del proyecto.
 *   **SQL Server Management Studio (SSMS):** Ejecución de los scripts SQL (creación del DW, carga de dimensiones y tabla de hechos) y administración de las bases de datos.
-
 *   **SQL Server 2019 SSEI (SQL Server Express Edition / Evaluation / Installation):** Motor de base de datos donde se aloja la base transaccional `KentFoods` y el Data Warehouse `KentFoodsDW`. 
 *   **Microsoft.DataTools.IntegrationServices (SSIS):** Extensión de Visual Studio para SQL Server Integration Services (SSIS), utilizada para construir el proceso ETL.
+*   **Microsoft.DataTools.AnalysisServices (SSAS):** Extensión de Visual Studio para SQL Server Analysis Services (SSAS), utilizada para diseñar el cubo OLAP multidimensional.
+*   **Power BI:** Visualización de los KPIs y construcción del dashboard de la solución.
+*   **Git / GitHub:** Control de versiones con estrategia de ramas para el desarrollo y entrega académica.
 
-*   **Microsoft.DataTools.AnalysisServices (SSAS):** Extensión de Visual Studio para SQL Server Analysis Services (SSAS), utilizada para diseñar el cubo OLAP multidimensional. |
-
-*   **Power BI:**  Visualización de los KPIs y construcción del dashboard de la solución.
-
-*   **Github Desktop**: Usado para la actualización de cambios en el proyecto
-
-## Estructura del repositorio (Por terminar)
-
+## Estructura del Repositorio
 ```
 proyecto_bi_usm/
 ├── .gitignore
@@ -244,5 +235,4 @@ proyecto_bi_usm/
 │   └── to_save
 └── powerbi/
     └── to_save
-
 ```
