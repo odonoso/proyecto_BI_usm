@@ -113,13 +113,59 @@ El paquete ETL fue diseñado para ejecutarse en cascada mediante **Restricciones
 
 ## Cubo OLAP KentFoods (Fase 2)
 
-x
-x
-x
-x
-x
-x
-x
+El cubo `Kent Foods DW` se construyó con SQL Server Analysis Services
+(modo multidimensional, almacenamiento MOLAP) sobre el DW `KentFoodsDW`.
+Proyecto: `olep/proyecto_sass/Cubo_olap/`.
+
+**Origen de datos.** Conexión OLE DB a `KentFoodsDW` (`Data Source=.`),
+con suplantación de la cuenta de servicio de SSAS, que tiene `db_datareader`
+sobre la base. El Data Source View incluye las 5 dimensiones y
+`Fact_Detalle_venta`, unidas por las claves foráneas del modelo estrella.
+
+**Dimensiones.**
+| Dimensión del cubo | Origen | Clave | Jerarquías |
+|---|---|---|---|
+| Dim Cliente | Dim_Cliente | ID_CLIENTE | [País → Ciudad → Empresa] |
+| Dim Producto | Dim_Producto | ID_PROD | [Categoría → Producto]; [País proveedor → Proveedor → Producto] |
+| Dim Empleado | Dim_Empleado | ID_EMPLEADO | [País → Ciudad → Empleado] |
+| Dim Transportista | Dim_Transportista | ID_TRANSPORTISTA | Sin jerarquía |
+| ID FECHA ORDEN | Dim_Tiempo | ID_FECHA_ORDEN | calendario (Año → Mes → Día) |
+| ID FECHA ENVIO | Dim_Tiempo | ID_FECHA_ENVIO | calendario (Año → Mes → Día) |
+
+`Dim_Tiempo` se usa como dimensión de rol múltiple: una sola tabla,
+vinculada a la fecha de orden y a la de envío.
+
+**Medidas** (grupo `Fact Detalle Venta`).
+| Medida | Columna | Agregación |
+|---|---|---|
+| CANTIDAD | CANTIDAD | Sum |
+| MONTO BRUTO / MONTO DESCUENTO / MONTO TOTAL | columnas homónimas | Sum |
+| DIAS DESPACHO | DIAS_DESPACHO | Sum (solo base del promedio) |
+| Recuento Dias Despacho | DIAS_DESPACHO | Count (órdenes con envío) |
+| Recuento Fact Detalle Venta | — | Count |
+
+**Miembros calculados.**
+| Miembro | Fórmula |
+|---|---|
+| Ventas Netas Totales | MONTO TOTAL |
+| Concentracion Ventas % | MONTO TOTAL / MONTO TOTAL de todos los productos |
+| Ranking Proveedor | Posición del proveedor ordenado por MONTO TOTAL |
+| Tiempo Promedio Despacho (dias) | DIAS DESPACHO / Recuento Dias Despacho |
+
+**Validación.** [Captura del Navegador con cada KPI]. Ejemplo:
+`SELECT {[Measures].[Ventas Netas Totales]} ON 0,
+[Dim Producto].[CATEGORIA].[CATEGORIA].Members ON 1 FROM [Kent Foods DW]`
+Cotejado contra: `SELECT CATEGORIA, SUM(MONTO_TOTAL) ... GROUP BY CATEGORIA`.
+
+
+#### Proceso de creación cubo MOLAP (Osvaldo Donoso)
+1. Proyecto Analysis Services Multidimensional y Data Source `KentFoodsDW`.
+2. Data Source View con las 6 tablas y sus relaciones.
+3. Cube Wizard con `Fact_Detalle_venta` como grupo de medidas.
+4. Dimensión de rol múltiple para las dos fechas.
+5. Jerarquías y relaciones de atributos.
+6. Medidas, miembros calculados (MDX) y KPI.
+7. Implementar y procesar (Process Full); validar en el Navegador.
 
 ## PowerBI de KentFoods (Fase 2)
 
@@ -206,9 +252,17 @@ proyecto_bi_usm/
 
 #### Base de datos Dimensional (Osvaldo Donoso)
 
-x
-x
-x
+**Requisitos:** SQL Server, SSMS y la base original `KentFoods` en la misma instancia.
+
+**Opción A: restaurar el backup**
+1. En SSMS: *Bases de datos* → *Restaurar base de datos...* → `database/backup/KentFoodsDW_backup.bak`.
+2. En *Opciones*: marcar *WITH REPLACE* y *Cerrar conexiones existentes*, y desmarcar la copia del final del registro.
+
+**Opción B: construir desde cero**
+1. Ejecutar `database/scripts/build_script.sql`, que recrea `KentFoodsDW` con las 5 dimensiones y la tabla de hechos.
+2. Ejecutar el paquete ETL para poblar tiempo, dimensiones y hechos.
+
+**Validación:** `SELECT COUNT(*)` en cada tabla. Se esperan 91 clientes, 77 productos, 49 empleados y 2.155 filas de hechos.
 
 
 #### Proceso ETL (Gonzalo Cayupil)
@@ -219,9 +273,16 @@ x
 
 #### Proceso de creación cubo MOLAP (Osvaldo Donoso)
 
-x
-x
-x
+**Requisitos:** Visual Studio con la extensión de Analysis Services, una instancia de SSAS multidimensional y `KentFoodsDW` cargada.
+
+1. Abrir `olep/proyecto_sass/ProyectoMultidimensional1/Kentfood_cube.sln`.
+2. En `Kent Foods DW.ds`, revisar que el servidor y la base (`KentFoodsDW`) coincidan con tu instancia. La cuenta de servicio de SSAS necesita el rol `db_datareader` sobre la base.
+3. Clic derecho en el proyecto → *Implementar*, y luego *Procesar* con **Process Full**.
+4. Verificar en el *Navegador* del cubo: `MONTO TOTAL` por año debe mostrar valores, y cada KPI de la pestaña *KPI* debe mostrar valor, meta y estado.
+
+**Contenido del cubo:** grupo de medidas `Fact Detalle Venta`, 5 dimensiones (Tiempo con rol doble: orden y envío), 4 miembros calculados (`Ventas Netas Totales`, `Concentracion Ventas %`, `Ranking Proveedor`, `Tiempo Promedio Despacho (dias)`) y 4 KPI.
+
+**Problemas frecuentes:** el error de conexión suele ser de permisos de la cuenta de SSAS, y el de clave de tiempo no encontrada se resuelve repitiendo Process Full con `Dim_Tiempo` poblada.
 
 #### Visualización de metricas en Power BI (Felipe Gamboa y Gonzalo Cayupil)
 
