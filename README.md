@@ -114,7 +114,7 @@ El paquete ETL fue diseñado para ejecutarse en cascada mediante **Restricciones
 - **Dimensión Cliente:** Se integró un componente de Columna Derivada para gestionar los valores nulos del campo CodigoPostal mediante la función `REPLACENULL`, transfiriendo 91 filas hacia `[dbo].[Dim_Cliente]`.
 - **Dimensión Producto:** Se integraron las tablas Productos, Categorías y Proveedores. Se implementó un componente de Conversión de Datos para transformar tipos `ntext` a `DT_WSTR`, transfiriendo 77 filas hacia `[dbo].[Dim_Producto]`.
 - **Dimensión Empleado:** Se cargó uniendo Empleados y Territorios mediante una subconsulta con `MIN(TerritorioID)` para evitar duplicados. Carga exitosa de 49 filas en `[dbo].[Dim_Empleado]`.
-- **Tabla de Hechos (Fact_Detalle_venta):** Se configuró la carga de 2,155 filas operativas. Incorpora métricas precalculadas y blindadas mediante `CAST` explícito para encajar en el formato `DECIMAL(14,2)` del Data Warehouse.La unicidad del grano (una fila por producto dentro de una orden) queda garantizada por la llave primaria compuesta, formada por `ID_ORDEN` y todas las claves foráneas de las dimensiones, garantizando un modelo analítico robusto y libre de duplicados.
+- **Tabla de Hechos (Fact_Detalle_venta):** Se configuró la carga de 2,155 filas operativas. Incorpora métricas precalculadas y blindadas mediante `CAST` explícito para encajar en el formato `DECIMAL(14,2)` del Data Warehouse. La unicidad del grano (una fila por producto dentro de una orden) queda garantizada por la llave primaria compuesta, formada por `ID_ORDEN` y todas las claves foráneas de las dimensiones, garantizando un modelo analítico robusto y libre de duplicados.
 
 
 # **FASE 2 DEL PROYECTO**
@@ -162,15 +162,19 @@ vinculada a la fecha de orden y a la de envío.
 | Ranking Proveedor | Posición del proveedor ordenado por MONTO TOTAL |
 | Tiempo Promedio Despacho (dias) | DIAS DESPACHO / Recuento Dias Despacho |
 
-**Validación.** [Captura del Navegador con cada KPI]. Ejemplo:
+**Validación.** Ejemplo de consulta MDX utilizada:
 `SELECT {[Measures].[Ventas Netas Totales]} ON 0,
 [Dim Producto].[CATEGORIA].[CATEGORIA].Members ON 1 FROM [Kent Foods DW]`
-Cotejado contra: `SELECT CATEGORIA, SUM(MONTO_TOTAL) ... GROUP BY CATEGORIA`.
+Cotejado contra consultas SQL tradicionales sobre el DW.
 
 
 ## PowerBI de KentFoods
 
-Dashboard interactivo implementado mediante Power BI Desktop conectándose en modo *Import* al cubo OLAP local (`localhost:2383`, base de datos `Kentfood_cube`), permitiendo la formulación de medidas DAX locales, segmentaciones temporales avanzadas y análisis gerencial por categoría, cliente y transportista.
+Dashboard interactivo implementado mediante Power BI Desktop conectándose en modo *Live Connection* al cubo OLAP local (`localhost:2383`, base de datos `Kentfood_cube`), permitiendo el análisis gerencial estructurado en 4 vistas clave:
+- **Resumen global KPI** (Tarjetas generales con montos consolidados).
+- **Evolución de Ventas en el tiempo** (Gráficos de tendencia temporal).
+- **Venta x Categoria** (Distribución comercial por líneas de alimentos).
+- **Venta x Cliente** (Rendimiento y compras por cuenta corporativa).
 
 
 ## Tecnologías Utilizadas 
@@ -184,7 +188,7 @@ Este proyecto utiliza el siguiente conjunto de herramientas y tecnologías para 
 *   **Microsoft.DataTools.IntegrationServices (SSIS):** Extensión de Visual Studio para SQL Server Integration Services (SSIS), utilizada para construir el proceso ETL.
 *   **Microsoft.DataTools.AnalysisServices (SSAS):** Extensión de Visual Studio para SQL Server Analysis Services (SSAS), utilizada para diseñar el cubo OLAP multidimensional.
 *   **Power BI:** Visualización de los KPIs y construcción del dashboard de la solución.
-*   **Git / GitHub:** Control de versiones con estrategia estricta de ramas (`main` para backend/SSAS y `powerbi-report` para reportes).
+*   **Git / GitHub:** Control de versiones con estrategia de ramas para el desarrollo y entrega académica.
 
 ## Estructura del Repositorio
 ```
@@ -231,5 +235,4 @@ proyecto_bi_usm/
 │   └── to_save
 └── powerbi/
     └── to_save
-
 ```
