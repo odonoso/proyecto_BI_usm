@@ -8,7 +8,7 @@
       <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
       <Value>
         <dds xmlns="">
-          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-4187" scrolltop="-6099" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="11298" y="10769" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="1" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-4187" scrolltop="-6099" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="10134" y="10769" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="1" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
             <font>
               <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
             </font>
@@ -126,7 +126,7 @@
         </KeyColumn>
       </KeyColumns>
       <AttributeRelationships>
-        <AttributeRelationship dwd:design-time-name="bf08708c-5298-466d-abca-91e2fc7e6ff8">
+        <AttributeRelationship dwd:design-time-name="889366fc-4e82-4f0b-a9a6-e5313ab1bef5">
           <AttributeID>EMPRESA</AttributeID>
           <RelationshipType>Rigid</RelationshipType>
           <Name>EMPRESA</Name>
@@ -151,7 +151,7 @@
         </KeyColumn>
       </KeyColumns>
       <AttributeRelationships>
-        <AttributeRelationship dwd:design-time-name="d664173b-d609-4fcc-ac2d-582a02976bc6">
+        <AttributeRelationship dwd:design-time-name="9e7d6b70-e913-4520-82c1-8d4c964bea1f">
           <AttributeID>CIUDAD</AttributeID>
           <RelationshipType>Rigid</RelationshipType>
           <Name>CIUDAD</Name>
@@ -222,6 +222,11 @@
           <ID>EMPRESA</ID>
           <Name>EMPRESA</Name>
           <SourceAttributeID>EMPRESA</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="e0e87cee-ef2a-466f-873a-05a9347c902b">
+          <ID>ID CLIENTE</ID>
+          <Name>ID CLIENTE</Name>
+          <SourceAttributeID>ID CLIENTE</SourceAttributeID>
         </Level>
       </Levels>
     </Hierarchy>

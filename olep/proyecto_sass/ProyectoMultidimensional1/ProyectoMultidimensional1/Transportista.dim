@@ -144,6 +144,7 @@
           <ColumnID>NOMBRE_TRANSPORTISTA</ColumnID>
         </Source>
       </NameColumn>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
       <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
       <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
     </Attribute>
@@ -153,15 +154,15 @@
       <ID>Hierarchy</ID>
       <Name>Hierarchy</Name>
       <Levels>
-        <Level dwd:design-time-name="9be15d51-4029-4971-b263-88fa03a63e3b">
-          <ID>ID TRANSPORTISTA</ID>
-          <Name>ID TRANSPORTISTA</Name>
-          <SourceAttributeID>ID TRANSPORTISTA</SourceAttributeID>
-        </Level>
         <Level dwd:design-time-name="b399b3ee-1205-4d79-9ff4-d9caf0c6963b">
           <ID>NOMBRE TRANSPORTISTA</ID>
           <Name>NOMBRE TRANSPORTISTA</Name>
           <SourceAttributeID>NOMBRE TRANSPORTISTA</SourceAttributeID>
+        </Level>
+        <Level dwd:design-time-name="9be15d51-4029-4971-b263-88fa03a63e3b">
+          <ID>ID TRANSPORTISTA</ID>
+          <Name>ID TRANSPORTISTA</Name>
+          <SourceAttributeID>ID TRANSPORTISTA</SourceAttributeID>
         </Level>
       </Levels>
     </Hierarchy>
