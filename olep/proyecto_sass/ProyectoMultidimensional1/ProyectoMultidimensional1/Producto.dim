@@ -8,7 +8,7 @@
       <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
       <Value>
         <dds xmlns="">
-          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-3512" scrolltop="-5808" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="6588" y="10742" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="1" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-3512" scrolltop="-5808" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="5900" y="10742" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="1" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
             <font>
               <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
             </font>
@@ -146,15 +146,22 @@
       <ID>NOMBRE PRODUCTO</ID>
       <Name>NOMBRE PRODUCTO</Name>
       <KeyColumns>
-        <KeyColumn dwd:design-time-name="81c59ed3-06ed-492e-9b64-506758df5817">
-          <DataType>WChar</DataType>
-          <DataSize>100</DataSize>
-          <Source xsi:type="ColumnBinding" dwd:design-time-name="156c8910-e461-4e12-98d5-41689463410b">
+        <KeyColumn dwd:design-time-name="17fcfe5e-beb1-46df-a4dd-34a5f5319859">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="362fa361-03c4-46d4-8df9-ada52daca51d">
             <TableID>dbo_Dim_Producto</TableID>
-            <ColumnID>NOMBRE_PRODUCTO</ColumnID>
+            <ColumnID>ID_PROD</ColumnID>
           </Source>
         </KeyColumn>
       </KeyColumns>
+      <NameColumn dwd:design-time-name="2d68d447-2465-4573-be86-bf85b9a04f33">
+        <DataType>WChar</DataType>
+        <DataSize>100</DataSize>
+        <Source xsi:type="ColumnBinding" dwd:design-time-name="2c751a55-d9f9-4588-9e82-f7a031c919c3">
+          <TableID>dbo_Dim_Producto</TableID>
+          <ColumnID>NOMBRE_PRODUCTO</ColumnID>
+        </Source>
+      </NameColumn>
       <AttributeRelationships>
         <AttributeRelationship dwd:design-time-name="f410f113-f230-4240-98c8-d8594b1d50ad">
           <AttributeID>CATEGORIA</AttributeID>
