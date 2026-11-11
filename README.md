@@ -121,7 +121,7 @@ El paquete ETL fue diseñado para ejecutarse en cascada mediante **Restricciones
 
 
 
-## Cubo OLAP KentFoods (Por modificar)
+## Cubo OLAP KentFoods
 
 El cubo `Kent Foods DW` se construyó con SQL Server Analysis Services
 (modo multidimensional, almacenamiento MOLAP) sobre el DW `KentFoodsDW`.
@@ -168,38 +168,25 @@ vinculada a la fecha de orden y a la de envío.
 Cotejado contra: `SELECT CATEGORIA, SUM(MONTO_TOTAL) ... GROUP BY CATEGORIA`.
 
 
-## PowerBI de KentFoods (Por insertar Imagen)
+## PowerBI de KentFoods
 
-x
-x
-x
-x
-x
-x
-x
+Dashboard interactivo implementado mediante Power BI Desktop conectándose en modo *Import* al cubo OLAP local (`localhost:2383`, base de datos `Kentfood_cube`), permitiendo la formulación de medidas DAX locales, segmentaciones temporales avanzadas y análisis gerencial por categoría, cliente y transportista.
+
 
 ## Tecnologías Utilizadas 
 
 Este proyecto utiliza el siguiente conjunto de herramientas y tecnologías para el desarrollo, gestión de bases de datos, integración, análisis y visualización de datos:
 
-
-*   **Visual Studio:** Entorno de desarrollo integrado principal. Usado en la creación del proceso ETL y Cubo MOLAP del proyecto
-
-*   **Visual Studio Code:** Editor de código. Usado para la creación de código SQL, scripts, documentación del readme y estructura del proyecto
-
+*   **Visual Studio:** Entorno de desarrollo integrado principal. Usado en la creación del proceso ETL y Cubo MOLAP del proyecto.
+*   **Visual Studio Code:** Editor de código. Usado para la creación de código SQL, scripts, documentación del readme y estructura del proyecto.
 *   **SQL Server Management Studio (SSMS):** Ejecución de los scripts SQL (creación del DW, carga de dimensiones y tabla de hechos) y administración de las bases de datos.
-
 *   **SQL Server 2019 SSEI (SQL Server Express Edition / Evaluation / Installation):** Motor de base de datos donde se aloja la base transaccional `KentFoods` y el Data Warehouse `KentFoodsDW`. 
 *   **Microsoft.DataTools.IntegrationServices (SSIS):** Extensión de Visual Studio para SQL Server Integration Services (SSIS), utilizada para construir el proceso ETL.
+*   **Microsoft.DataTools.AnalysisServices (SSAS):** Extensión de Visual Studio para SQL Server Analysis Services (SSAS), utilizada para diseñar el cubo OLAP multidimensional.
+*   **Power BI:** Visualización de los KPIs y construcción del dashboard de la solución.
+*   **Git / GitHub:** Control de versiones con estrategia estricta de ramas (`main` para backend/SSAS y `powerbi-report` para reportes).
 
-*   **Microsoft.DataTools.AnalysisServices (SSAS):** Extensión de Visual Studio para SQL Server Analysis Services (SSAS), utilizada para diseñar el cubo OLAP multidimensional. |
-
-*   **Power BI:**  Visualización de los KPIs y construcción del dashboard de la solución.
-
-*   **Github Desktop**: Usado para la actualización de cambios en el proyecto
-
-## Estructura del repositorio (Por terminar)
-
+## Estructura del Repositorio
 ```
 proyecto_bi_usm/
 ├── .gitignore
