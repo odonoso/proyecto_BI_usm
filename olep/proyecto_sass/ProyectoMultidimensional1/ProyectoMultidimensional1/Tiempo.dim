@@ -148,6 +148,7 @@
           </Source>
         </KeyColumn>
       </KeyColumns>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
       <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
       <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
     </Attribute>
@@ -181,9 +182,11 @@
       <AttributeRelationships>
         <AttributeRelationship dwd:design-time-name="afc6dbbb-321c-4f70-987a-2054c346a34d">
           <AttributeID>AÑO</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
           <Name>AÑO</Name>
         </AttributeRelationship>
       </AttributeRelationships>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
       <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
       <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
     </Attribute>
@@ -223,9 +226,11 @@
       <AttributeRelationships>
         <AttributeRelationship dwd:design-time-name="4dc6ee9f-196d-4fd3-88de-04126eb08872">
           <AttributeID>NOMBRE MES</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
           <Name>NOMBRE MES</Name>
         </AttributeRelationship>
       </AttributeRelationships>
+      <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
       <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
       <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
     </Attribute>
