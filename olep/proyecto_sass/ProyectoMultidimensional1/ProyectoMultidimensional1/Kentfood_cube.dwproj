@@ -60,7 +60,7 @@
           <ConfigurationSetting>
             <Id>Kent Foods DW</Id>
             <Name>Kent Foods DW</Name>
-            <Value xsi:type="xsd:string">Provider=SQLNCLI11.1;Data Source=.;Integrated Security=SSPI;Initial Catalog=KentFoodsDW</Value>
+            <Value xsi:type="xsd:string">Provider=MSOLEDBSQL;Data Source=localhost\BI;Initial Catalog=KentFoodsDW;Integrated Security=SSPI</Value>
           </ConfigurationSetting>
         </ConnectionMappings>
         <ConnectionSecurityMappings>
