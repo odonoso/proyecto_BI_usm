@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 ﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="3787034d-f6a0-4128-bb7a-f485536a727b" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+=======
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="9d9b9c9d-37b2-44ea-b2a8-aadff22b035c" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+>>>>>>> Stashed changes
   <ID>Dim Tiempo</ID>
   <Name>Tiempo</Name>
   <CreatedTimestamp>0001-01-01T03:00:00Z</CreatedTimestamp>
@@ -8,7 +12,11 @@
       <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
       <Value>
         <dds xmlns="">
+<<<<<<< Updated upstream
           <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-4372" scrolltop="-5053" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="11165" y="16960" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="0" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+=======
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-4372" scrolltop="-5053" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="4339" y="12091" backcolor="2039583" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="1" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+>>>>>>> Stashed changes
             <font>
               <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
             </font>
@@ -101,32 +109,53 @@
   </Annotations>
   <LastProcessed>0001-01-01T03:00:00Z</LastProcessed>
   <State>Unprocessed</State>
+<<<<<<< Updated upstream
   <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="702d60ca-0901-41aa-ad1a-fef7e711576e">
     <DataSourceViewID>Kent Foods DW</DataSourceViewID>
   </Source>
   <Type>Time</Type>
   <ErrorConfiguration dwd:design-time-name="f52ab3e6-7b01-4102-bf78-68641419dece">
+=======
+  <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="ab4c49bd-bdb9-4cee-9946-0eb7441fef10">
+    <DataSourceViewID>Kent Foods DW</DataSourceViewID>
+  </Source>
+  <ErrorConfiguration dwd:design-time-name="c5c5017e-e86a-4afc-bffa-42970168ef7a">
+>>>>>>> Stashed changes
     <KeyNotFound>ReportAndStop</KeyNotFound>
     <KeyDuplicate>ReportAndStop</KeyDuplicate>
     <NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed>
   </ErrorConfiguration>
   <CurrentStorageMode>Molap</CurrentStorageMode>
   <Attributes>
+<<<<<<< Updated upstream
     <Attribute dwd:design-time-name="14eded7d-2476-4f52-b33b-a09f86000d41">
+=======
+    <Attribute dwd:design-time-name="4b0df369-6d3f-4a38-bfde-4af80c803344">
+>>>>>>> Stashed changes
       <ID>ID TIEMPO</ID>
       <Name>ID TIEMPO</Name>
       <Usage>Key</Usage>
       <KeyColumns>
+<<<<<<< Updated upstream
         <KeyColumn dwd:design-time-name="7e4a3f50-0cc4-4e7b-a073-744b1cf37098">
           <DataType>Integer</DataType>
           <Source xsi:type="ColumnBinding" dwd:design-time-name="2cf181a5-291a-467a-9167-de3677056c37">
+=======
+        <KeyColumn dwd:design-time-name="b251ed31-d5f5-4293-829b-e19fcdc81715">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="ffffa898-9f7c-4456-b503-755db63c7530">
+>>>>>>> Stashed changes
             <TableID>dbo_Dim_Tiempo</TableID>
             <ColumnID>ID_TIEMPO</ColumnID>
           </Source>
         </KeyColumn>
       </KeyColumns>
       <AttributeRelationships>
+<<<<<<< Updated upstream
         <AttributeRelationship dwd:design-time-name="cb240636-c2c9-4403-98c1-22ff6b96587c">
+=======
+        <AttributeRelationship dwd:design-time-name="b0abc8cb-8b0b-474d-b18b-92535d94319a">
+>>>>>>> Stashed changes
           <AttributeID>DIA</AttributeID>
           <Name>DIA</Name>
         </AttributeRelationship>
@@ -136,14 +165,24 @@
       <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
       <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
     </Attribute>
+<<<<<<< Updated upstream
     <Attribute dwd:design-time-name="c32cd8e3-c9bf-4c8c-9216-db3834119d70">
+=======
+    <Attribute dwd:design-time-name="88feb44f-9f9a-46ef-b15d-10db3e638429">
+>>>>>>> Stashed changes
       <ID>AÑO</ID>
       <Name>AÑO</Name>
       <Type>Years</Type>
       <KeyColumns>
+<<<<<<< Updated upstream
         <KeyColumn dwd:design-time-name="5ba9bc20-c8b0-498d-bff1-534e674cc7ea">
           <DataType>SmallInt</DataType>
           <Source xsi:type="ColumnBinding" dwd:design-time-name="426e9426-5251-4476-9098-9fb1bf5ffbb3">
+=======
+        <KeyColumn dwd:design-time-name="daafa334-08c2-4e60-bb4a-f6c0e891b360">
+          <DataType>SmallInt</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="c02f55cd-8aa6-46b2-af75-0fb6329d759a">
+>>>>>>> Stashed changes
             <TableID>dbo_Dim_Tiempo</TableID>
             <ColumnID>AÑO</ColumnID>
           </Source>
@@ -153,15 +192,26 @@
       <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
       <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
     </Attribute>
+<<<<<<< Updated upstream
     <Attribute dwd:design-time-name="6dd7452c-fbda-4c0b-81eb-ad1b5a11f3a0">
+=======
+    <Attribute dwd:design-time-name="4b076ccb-cfe8-46e7-a04d-8da871a7d928">
+>>>>>>> Stashed changes
       <ID>NOMBRE MES</ID>
       <Name>NOMBRE MES</Name>
       <Type>Months</Type>
       <KeyColumns>
+<<<<<<< Updated upstream
         <KeyColumn dwd:design-time-name="7e5e8007-75ef-40cb-bbc8-71844d932434">
           <DataType>WChar</DataType>
           <DataSize>15</DataSize>
           <Source xsi:type="ColumnBinding" dwd:design-time-name="a9df2356-7ffd-4417-a123-cf0c6678bee5">
+=======
+        <KeyColumn dwd:design-time-name="890464a5-6153-4e2f-8573-0953cfbfcc45">
+          <DataType>WChar</DataType>
+          <DataSize>15</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="eaa5db84-94de-4898-b0ac-294f6f3729e5">
+>>>>>>> Stashed changes
             <TableID>dbo_Dim_Tiempo</TableID>
             <ColumnID>AÑO</ColumnID>
           </Source>
@@ -183,7 +233,11 @@
         </Source>
       </NameColumn>
       <AttributeRelationships>
+<<<<<<< Updated upstream
         <AttributeRelationship dwd:design-time-name="289a0f37-f074-46cf-9284-61fbaeb4e8ec">
+=======
+        <AttributeRelationship dwd:design-time-name="337a7df9-db15-49f6-82a7-25b4a79f141e">
+>>>>>>> Stashed changes
           <AttributeID>AÑO</AttributeID>
           <RelationshipType>Rigid</RelationshipType>
           <Name>AÑO</Name>
@@ -193,11 +247,16 @@
       <ddl200:ProcessingState>Unprocessed</ddl200:ProcessingState>
       <ddl300:AttributeHierarchyProcessingState>Unprocessed</ddl300:AttributeHierarchyProcessingState>
     </Attribute>
+<<<<<<< Updated upstream
     <Attribute dwd:design-time-name="462c45cf-40fb-43b9-9bda-79f0046cf934">
+=======
+    <Attribute dwd:design-time-name="30e2df67-79ff-416d-b77c-9e6d425f9861">
+>>>>>>> Stashed changes
       <ID>DIA</ID>
       <Name>DIA</Name>
       <Type>Days</Type>
       <KeyColumns>
+<<<<<<< Updated upstream
         <KeyColumn dwd:design-time-name="4cffae13-8966-4496-a243-6c9bbe0082e3">
           <DataType>SmallInt</DataType>
           <Source xsi:type="ColumnBinding" dwd:design-time-name="836f2315-23dd-4436-8c2d-72c0e32630e9">
@@ -215,6 +274,11 @@
         <KeyColumn dwd:design-time-name="8f318374-3c7b-4264-aa36-994114d0e5f6">
           <DataType>UnsignedTinyInt</DataType>
           <Source xsi:type="ColumnBinding" dwd:design-time-name="9531b145-ce5a-4033-94af-879947190d65">
+=======
+        <KeyColumn dwd:design-time-name="6d5b8bdf-7772-40e4-bd65-f9340837d500">
+          <DataType>UnsignedTinyInt</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="abe16850-81b2-4582-9703-c0f5542e1a69">
+>>>>>>> Stashed changes
             <TableID>dbo_Dim_Tiempo</TableID>
             <ColumnID>DIA</ColumnID>
           </Source>
@@ -228,7 +292,11 @@
         </Source>
       </NameColumn>
       <AttributeRelationships>
+<<<<<<< Updated upstream
         <AttributeRelationship dwd:design-time-name="1574ea53-be75-4b15-b660-c07c5e6cb5e8">
+=======
+        <AttributeRelationship dwd:design-time-name="eaad0b4e-280e-4b66-8e15-cd325573a42a">
+>>>>>>> Stashed changes
           <AttributeID>NOMBRE MES</AttributeID>
           <RelationshipType>Rigid</RelationshipType>
           <Name>NOMBRE MES</Name>
@@ -240,21 +308,37 @@
     </Attribute>
   </Attributes>
   <Hierarchies>
+<<<<<<< Updated upstream
     <Hierarchy dwd:design-time-name="0cf37902-a0b4-4b64-898b-4144212ec5f7">
       <ID>Jerarquía</ID>
       <Name>calendario</Name>
       <Levels>
         <Level dwd:design-time-name="e5984417-8d54-42bd-af42-e1af63268d59">
+=======
+    <Hierarchy dwd:design-time-name="66b49fdb-d47f-4a21-8b43-022dae927eba">
+      <ID>Jerarquía</ID>
+      <Name>calendario</Name>
+      <Levels>
+        <Level dwd:design-time-name="4bd2e444-e482-4ed7-a89e-20f5b14e569f">
+>>>>>>> Stashed changes
           <ID>AÑO</ID>
           <Name>AÑO</Name>
           <SourceAttributeID>AÑO</SourceAttributeID>
         </Level>
+<<<<<<< Updated upstream
         <Level dwd:design-time-name="268dd266-6f25-4632-a5a8-5ef6dcff6fe3">
+=======
+        <Level dwd:design-time-name="c2d6f495-c7ab-47eb-85ab-cbd8e454495f">
+>>>>>>> Stashed changes
           <ID>NOMBRE MES</ID>
           <Name>NOMBRE MES</Name>
           <SourceAttributeID>NOMBRE MES</SourceAttributeID>
         </Level>
+<<<<<<< Updated upstream
         <Level dwd:design-time-name="e407e48f-89d7-477a-a368-b9e56b9fda3c">
+=======
+        <Level dwd:design-time-name="1b7e5be7-35e8-4cd7-8d64-6d404dee51fa">
+>>>>>>> Stashed changes
           <ID>DIA</ID>
           <Name>DIA</Name>
           <SourceAttributeID>DIA</SourceAttributeID>
