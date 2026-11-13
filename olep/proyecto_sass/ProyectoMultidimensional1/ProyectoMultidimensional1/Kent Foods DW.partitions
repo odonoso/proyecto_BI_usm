@@ -1,17 +1,17 @@
-﻿<Cube xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="99592609-71c1-488a-9b18-f1b688b04db4" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+﻿<Cube xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="aac6fd57-088a-44d2-9a46-313e0f568eeb" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
   <ID>Kent Foods DW</ID>
   <MeasureGroups>
     <MeasureGroup>
       <ID>Fact Detalle Venta</ID>
       <Partitions>
-        <Partition dwd:design-time-name="a9d4d08b-347f-4223-a135-ac8058f484d4">
+        <Partition dwd:design-time-name="c8dd22e6-83c4-46de-90d0-d1feb38ec595">
           <ID>Fact Detalle Venta</ID>
           <Name>Fact Detalle Venta</Name>
           <CreatedTimestamp>0001-01-01T03:00:00Z</CreatedTimestamp>
           <LastSchemaUpdate>0001-01-01T03:00:00Z</LastSchemaUpdate>
           <LastProcessed>0001-01-01T03:00:00Z</LastProcessed>
           <State>Unprocessed</State>
-          <Source xsi:type="DsvTableBinding" dwd:design-time-name="2b1046ee-b70f-4f63-89c9-e701689f3ff1">
+          <Source xsi:type="DsvTableBinding" dwd:design-time-name="7ced3d52-958a-44ac-8e36-e604f018c4ae">
             <DataSourceViewID>Kent Foods DW</DataSourceViewID>
             <TableID>dbo_Fact_Detalle_venta</TableID>
           </Source>
