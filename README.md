@@ -69,6 +69,15 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
     - **Justificación de negocio:** Detecta qué categorías de alimentos concentran el mayor volumen de negocio y cuáles tienen baja rotación, facilitando decisiones estratégicas de abastecimiento con proveedores y gestión de inventario.
 
+- **Desempeño y Ranking de Mejores Proveedores**
+    
+    - **Fórmula análitica:** $\sum (\text{Cantidad} \times \text{PrecioUnitario} \times (1 - \text{Descuento})) \quad \text{agrupado por } \text{NombreProveedor}$
+
+    - **Dimensiones de análisis:** Dim_Producto (NombreProveedor, PaisProveedor, NombreCategoria).   Dim_Tiempo (Anio, Mes, dia). 
+    
+    - **Justificación de negocio:** Kent Foods comercializa productos alimenticios elaborados por terceros. Medir el rendimiento de cada proveedor permite a la gerencia:   Identificar socios estratégicos clave para negociar mejores acuerdos de compra por volumen o descuentos por pronto pago.Evaluar el riesgo de dependencia frente a un proveedor específico.Detectar proveedores con baja rotación o catálogo de alimentos poco demandado para renegociar contratos o reemplazarlos. 
+
+
 - **Tiempo Promedio de Entrega y Despacho**
     
     - **Formula analítica:** $$\frac{\sum (\text{FechaEnvio} - \text{FechaOrden})}{\text{Cantidad Total de Órdenes Despachadas}}$$
@@ -117,7 +126,7 @@ El paquete ETL fue diseñado para ejecutarse en cascada mediante **Restricciones
 
 El cubo `Kent Foods DW` se construyó con SQL Server Analysis Services
 (modo multidimensional, almacenamiento MOLAP) sobre el DW `KentFoodsDW`.
-Proyecto: `olep/proyecto_sass/Cubo_olap/`.
+Proyecto: `olep/proyecto_sass/ProyectoMultidimensional1/`.
 
 **Origen de datos.** Conexión OLE DB a `KentFoodsDW` (`Data Source=.`),
 con suplantación de la cuenta de servicio de SSAS, que tiene `db_datareader`
@@ -151,6 +160,7 @@ vinculada a la fecha de orden y a la de envío.
 |---|---|
 | Ventas Netas Totales | MONTO TOTAL |
 | Concentracion Ventas % | MONTO TOTAL / MONTO TOTAL de todos los productos |
+| Ranking Proveedor | Posición del proveedor ordenado por MONTO TOTAL |
 | Tiempo Promedio Despacho (dias) | DIAS DESPACHO / Recuento Dias Despacho |
 
 **Validación.** Ejemplo de consulta MDX utilizada:
@@ -164,6 +174,7 @@ Cotejado contra consultas SQL tradicionales sobre el DW.
 Dashboard interactivo implementado mediante Power BI Desktop conectándose en modo *Live Connection* al cubo OLAP local (`localhost:2383`, base de datos `Kentfood_cube`), permitiendo el análisis gerencial estructurado en 4 vistas clave:
 - **Resumen global KPI** (Tarjetas generales con montos consolidados).
 - **Evolución de Ventas en el tiempo** (Gráficos de tendencia temporal).
+- **Venta x Categoria** (Distribución comercial por líneas de alimentos).
 - **Venta x Cliente** (Rendimiento y compras por cuenta corporativa).
 
 
