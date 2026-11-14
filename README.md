@@ -69,14 +69,6 @@ Para este proceso de negocio, se escogerá el modelo dimensional "**TIPO ESTRELL
 
     - **Justificación de negocio:** Detecta qué categorías de alimentos concentran el mayor volumen de negocio y cuáles tienen baja rotación, facilitando decisiones estratégicas de abastecimiento con proveedores y gestión de inventario.
 
-- **Desempeño y Ranking de Mejores Proveedores**
-    
-    - **Fórmula análitica:** $\sum (\text{Cantidad} \times \text{PrecioUnitario} \times (1 - \text{Descuento})) \quad \text{agrupado por } \text{NombreProveedor}$
-
-    - **Dimensiones de análisis:** Dim_Producto (NombreProveedor, PaisProveedor, NombreCategoria).   Dim_Tiempo (Anio, Mes, dia). 
-    
-    - **Justificación de negocio:** Kent Foods comercializa productos alimenticios elaborados por terceros. Medir el rendimiento de cada proveedor permite a la gerencia:   Identificar socios estratégicos clave para negociar mejores acuerdos de compra por volumen o descuentos por pronto pago.Evaluar el riesgo de dependencia frente a un proveedor específico.Detectar proveedores con baja rotación o catálogo de alimentos poco demandado para renegociar contratos o reemplazarlos. 
-
 - **Tiempo Promedio de Entrega y Despacho**
     
     - **Formula analítica:** $$\frac{\sum (\text{FechaEnvio} - \text{FechaOrden})}{\text{Cantidad Total de Órdenes Despachadas}}$$
@@ -136,11 +128,11 @@ sobre la base. El Data Source View incluye las 5 dimensiones y
 | Dimensión del cubo | Origen | Clave | Jerarquías |
 |---|---|---|---|
 | Dim Cliente | Dim_Cliente | ID_CLIENTE | [País → Ciudad → Empresa] |
-| Dim Producto | Dim_Producto | ID_PROD | [Categoría → Producto]; [País proveedor → Proveedor → Producto] |
-| Dim Empleado | Dim_Empleado | ID_EMPLEADO | [País → Ciudad → Empleado] |
-| Dim Transportista | Dim_Transportista | ID_TRANSPORTISTA | Sin jerarquía |
-| ID FECHA ORDEN | Dim_Tiempo | ID_FECHA_ORDEN | calendario (Año → Mes → Día) |
-| ID FECHA ENVIO | Dim_Tiempo | ID_FECHA_ENVIO | calendario (Año → Mes → Día) |
+| Dim Producto | Dim_Producto | ID_PROD | [Categoría → Nombre Provedor → Nombre Producto] |
+| Dim Empleado | Dim_Empleado | ID_EMPLEADO | [Ciudad → País → Nombre → Apellido] |
+| Dim Transportista | Dim_Transportista | ID_TRANSPORTISTA | [Nombre Transportista → Telefono] |
+| ID FECHA ORDEN | Dim_Tiempo | ID_FECHA_ORDEN | calendario (Año → añoMes → Día) |
+| ID FECHA ENVIO | Dim_Tiempo | ID_FECHA_ENVIO | calendario (Año → añoMes → Día) |
 
 `Dim_Tiempo` se usa como dimensión de rol múltiple: una sola tabla,
 vinculada a la fecha de orden y a la de envío.
@@ -159,7 +151,6 @@ vinculada a la fecha de orden y a la de envío.
 |---|---|
 | Ventas Netas Totales | MONTO TOTAL |
 | Concentracion Ventas % | MONTO TOTAL / MONTO TOTAL de todos los productos |
-| Ranking Proveedor | Posición del proveedor ordenado por MONTO TOTAL |
 | Tiempo Promedio Despacho (dias) | DIAS DESPACHO / Recuento Dias Despacho |
 
 **Validación.** Ejemplo de consulta MDX utilizada:
@@ -173,7 +164,6 @@ Cotejado contra consultas SQL tradicionales sobre el DW.
 Dashboard interactivo implementado mediante Power BI Desktop conectándose en modo *Live Connection* al cubo OLAP local (`localhost:2383`, base de datos `Kentfood_cube`), permitiendo el análisis gerencial estructurado en 4 vistas clave:
 - **Resumen global KPI** (Tarjetas generales con montos consolidados).
 - **Evolución de Ventas en el tiempo** (Gráficos de tendencia temporal).
-- **Venta x Categoria** (Distribución comercial por líneas de alimentos).
 - **Venta x Cliente** (Rendimiento y compras por cuenta corporativa).
 
 
