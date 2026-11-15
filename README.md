@@ -172,10 +172,13 @@ Cotejado contra consultas SQL tradicionales sobre el DW.
 ## PowerBI de KentFoods
 
 Dashboard interactivo implementado mediante Power BI Desktop conectándose en modo *Live Connection* al cubo OLAP local (`localhost:2383`, base de datos `Kentfood_cube`), permitiendo el análisis gerencial estructurado en 4 vistas clave:
-- **Resumen global KPI** (Tarjetas generales con montos consolidados).
-- **Evolución de Ventas en el tiempo** (Gráficos de tendencia temporal).
-- **Venta x Categoria** (Distribución comercial por líneas de alimentos).
-- **Venta x Cliente** (Rendimiento y compras por cuenta corporativa).
+- **Ranking Proveedores** (Gráfico de barras horizontal que muestra el top 10 de mejores proveedores).
+- **Ventas Netas Totales** (Gráfico de lineas que muestran las ventas por años y meses. Además de una tarjeta que muestra la venta total historica).
+- **Concentración de Ventas por Categoría de Alimento** (Gráfico Horizontal donde se muestran de mayor a menor las categorías más vendidas).
+- **Tiempo Promedio Despacho** (Tarjeta KPI que muestra el tiempo promedio que tarda un envío en días).
+
+
+![Panel Visual KPIs](docs/grafico-powerbi/panel_de_datos.png)
 
 
 ## Tecnologías Utilizadas 
