@@ -140,8 +140,8 @@ sobre la base. El Data Source View incluye las 5 dimensiones y
 | Dim Producto | Dim_Producto | ID_PROD | [Categoría → Nombre Provedor → Nombre Producto] |
 | Dim Empleado | Dim_Empleado | ID_EMPLEADO | [Ciudad → País → Nombre → Apellido] |
 | Dim Transportista | Dim_Transportista | ID_TRANSPORTISTA | [Nombre Transportista → Telefono] |
-| ID FECHA ORDEN | Dim_Tiempo | ID_FECHA_ORDEN | calendario (Año → añoMes → Día) |
-| ID FECHA ENVIO | Dim_Tiempo | ID_FECHA_ENVIO | calendario (Año → añoMes → Día) |
+| ID FECHA ORDEN | Dim_Tiempo | ID_FECHA_ORDEN | calendario (AñoMes -> Año) |
+| ID FECHA ENVIO | Dim_Tiempo | ID_FECHA_ENVIO | calendario (AñoMes → Año) |
 
 `Dim_Tiempo` se usa como dimensión de rol múltiple: una sola tabla,
 vinculada a la fecha de orden y a la de envío.
@@ -178,7 +178,7 @@ Dashboard interactivo implementado mediante Power BI Desktop conectándose en mo
 - **Tiempo Promedio Despacho** (Tarjeta KPI que muestra el tiempo promedio que tarda un envío en días).
 
 
-![Panel Visual KPIs](docs/grafico-powerbi/panel_de_datos.png)
+![Panel Visual KPIs](docs/grafico-powerbi/foto_panel_pbi.png)
 
 
 ## Tecnologías Utilizadas 
@@ -211,6 +211,7 @@ proyecto_BI_usm/
 ├── docs/
 │   ├── modelo-dimensional/
 │   │   └── modelo_dimensional.png
+│   │   └── foto_panel_pbi.png
 │   └── presentacion/
 │       └── Proyecto BI Kent Foods.pptx
 ├── etl/
